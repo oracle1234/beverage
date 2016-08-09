@@ -3,12 +3,19 @@ package com.beverage.dto;
 import java.sql.Date;
 
 public class MemberDTO {
+	// 회원번호
 	private int member_num;
+	// 이름
 	private String name;
+	// 성별
 	private String gender;
+	// 이메일
 	private String email;
+	// 생일
 	private Date birth_date;
+	// 아이디
 	private String member_id;
+	// 암호
 	private String password;
 
 	private static MemberDTO dto = new MemberDTO();

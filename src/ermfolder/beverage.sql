@@ -46,8 +46,9 @@ CREATE TABLE b_favor
 (
 	member_num number NOT NULL,
 	beverage_id number
+	cafe_name varchar2(30)
+	beverage_name varchar2(30)
 );
-
 
 CREATE TABLE b_beverage
 (
