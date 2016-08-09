@@ -8,7 +8,7 @@ public class BeverageMain {
 
 	public static void main(String[] args) {
 		// ddd
-		// test jaemin
+		// test jaemin dd
 	}
 
 }
