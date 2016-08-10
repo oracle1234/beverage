@@ -15,8 +15,6 @@ public class BeverageDTO {
 	private String beverage_name;
 	// 음료 상세설명
 	private String beverage_text;
-	// 키값으로 카페명을 가지고오도록
-	private HashMap<Integer, String> cafe_map;
 
 	public int getBeverage_id() {
 		return beverage_id;
@@ -64,14 +62,6 @@ public class BeverageDTO {
 
 	public void setBeverage_text(String beverage_text) {
 		this.beverage_text = beverage_text;
-	}
-
-	public HashMap<Integer, String> getCafe_map() {
-		return cafe_map;
-	}
-
-	public void setCafe_map(HashMap<Integer, String> cafe_map) {
-		this.cafe_map = cafe_map;
 	}
 
 }
