@@ -1,7 +1,7 @@
 
 /* Drop Tables */
 
-DROP TABLE b_preference CASCADE CONSTRAINTS;
+DROP TABLE b_review CASCADE CONSTRAINTS;
 DROP TABLE b_beverage CASCADE CONSTRAINTS;
 DROP TABLE b_cafe CASCADE CONSTRAINTS;
 DROP TABLE b_favor CASCADE CONSTRAINTS;
@@ -34,10 +34,10 @@ CREATE TABLE b_cafe
 );
 
 
-CREATE TABLE b_preference
+CREATE TABLE b_review
 (
 	beverage_id number NOT NULL,
-	preference_level number NOT NULL,
+	review_level number NOT NULL,
 	beverage_review varchar2(100)
 );
 
