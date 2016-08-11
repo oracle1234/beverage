@@ -7,13 +7,12 @@ import com.beverage.dao.BeverageDAO;
 
 public class BeverageMain extends JFrame {
 	AdminJPanel admin;
-	
 
 	public BeverageMain() {
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
 		BeverageDAO.getInstance().cafeSelect();
-		
+
 		admin = new AdminJPanel();
 		setContentPane(admin);
 
@@ -23,8 +22,8 @@ public class BeverageMain extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		// new BeverageMain();
-		new LoginFrame();
+		new BeverageMain();
+		// new LoginFrame();
 	}
 
 }

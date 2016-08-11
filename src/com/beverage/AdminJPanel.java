@@ -14,17 +14,17 @@ import com.beverage.dto.MemberDTO;
 
 public class AdminJPanel extends JPanel {
 
+	// 카페등록
 	JTextField cafeName;
 	JButton cafeInBtn;
-
+	// 카페삭제
 	JComboBox<String> cafeBox;
 	JButton cafeDelBtn;
-
-	JButton registerBtn;
-	JLabel cafeTitle;
-
+	// 음료등록
 	JComboBox<String> b_CafeBox, b_TypeBox;
 	JTextField jfPrice, jfName, jfText;
+	// 음료삭제
+	JButton bd_Del;
 
 	public AdminJPanel() {
 		// 카페 등록
@@ -42,7 +42,6 @@ public class AdminJPanel extends JPanel {
 		// 음료 등록
 		b_CafeBox = new JComboBox<String>(model1);
 		jfPrice = new JTextField(10);
-
 		DefaultComboBoxModel<String> model2 = new DefaultComboBoxModel<String>();
 		model2.addElement("커피");
 		model2.addElement("티");
@@ -73,7 +72,7 @@ public class AdminJPanel extends JPanel {
 		del2.add(del1);
 
 		// 음료등록
-		JPanel bein = new JPanel();
+		JPanel bein = new JPanel(new FlowLayout());
 		bein.add(b_CafeBox);
 		bein.add(jfPrice);
 		bein.add(b_TypeBox);
@@ -90,7 +89,7 @@ public class AdminJPanel extends JPanel {
 		main.add(new JLabel("관리자페이지"));
 		main.add(in2);
 		main.add(del2);
-		main.add(bein);
+		main.add(bein2);
 
 		add(main);
 
