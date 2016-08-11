@@ -23,13 +23,11 @@ class Main_Frame extends JFrame implements ActionListener, KeyListener {
 		main = new MainPanel();
 		add("Center", main);
 
+		javax.swing.UIManager.put("Button.defaultButtonFollowsFocus", true);
 		main.memberJoinB.addActionListener(this);
 		main.loginB.addActionListener(this);
-
 		main.idT.addKeyListener(this);
 		main.passwordT.addKeyListener(this);
-		// main.memberJoinB.addKeyListener(this);
-		// main.loginB.addActionListener(this);
 
 		this.addWindowListener(new WindowAdapter() {
 			@Override
@@ -44,6 +42,7 @@ class Main_Frame extends JFrame implements ActionListener, KeyListener {
 
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.setSize(330, 510);
+		this.setResizable(false);
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		Dimension di = tk.getScreenSize();
 		Dimension di1 = this.getSize();
