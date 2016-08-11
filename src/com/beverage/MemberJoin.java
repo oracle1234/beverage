@@ -37,6 +37,9 @@ class JoinMain extends JFrame implements ActionListener {
 	JRadioButton manR, womanR; // 성별
 	JButton btnRegister, btnCancel, btnCheck; // 가입, 취소
 
+	MemberDAO dao = MemberDAO.getInstance();
+	MemberDTO dto = MemberDTO.getInstance();
+
 	public JoinMain() { // 가입용 생성자
 
 		this.setTitle("회원가입");
@@ -180,60 +183,70 @@ class JoinMain extends JFrame implements ActionListener {
 		String email = "";
 		String gender = "";
 
-		MemberDTO dto = MemberDTO.getInstance();
-
 		// 텍스트필드 빈칸일시 메세지 출력
+
 		if (idF.getText().equals("")) {
 			JOptionPane.showMessageDialog(this, "아이디를 입력하세요.");
+		} else {
+			if (idF.getText().length() >= 12) {
+				JOptionPane.showMessageDialog(this, "아이디는 영문, 숫자혼합 12자리까지 허용합니다");
+				return;
+			}
+		}
+
+		if (idF.getText().equals("")) {
+			JOptionPane.showMessageDialog(this, "아이디를 입력하세요.");
+			return;
 		} else if (passwdF.getText().equals("")) {
 			JOptionPane.showMessageDialog(this, "비밀번호를 입력하세요.");
+			return;
 		} else if (nameF.getText().equals("")) {
 			JOptionPane.showMessageDialog(this, "이름을 입력하세요.");
+			return;
 		} else if (birthF.getText().equals("")) {
 			JOptionPane.showMessageDialog(this, "생년월일을 입력하세요.");
+			return;
 		} else if (emailF.getText().equals("")) {
 			JOptionPane.showMessageDialog(this, "이메일을 입력하세요.");
+			return;
 		}
 
 		// 글자수 제한
 		if (idF.getText().length() >= 12) {
 			JOptionPane.showMessageDialog(this, "아이디는 영문, 숫자혼합 12자리까지 허용합니다");
+			return;
 		} else if (passwdF.getText().length() >= 12) {
-			JOptionPane.showMessageDialog(this, "영문, 숫자혼합 12자리까지 허용합니다");
+			JOptionPane.showMessageDialog(this, "비밀번호는 영문, 특수문자, 숫자혼합 12자리까지 허용합니다");
+			return;
 		} else if (nameF.getText().length() >= 10) {
 			JOptionPane.showMessageDialog(this, "이름이 너무 깁니다");
-		} else if (birthF.getText().length() != 8 && birthF.getText().matches(".*[a-Z].*") && birthF.getText().matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {
-			JOptionPane.showMessageDialog(this, "숫자 8자리 형식에 맞게 입력하세요");
-		} else if (emailF.getText().matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")){
-			JOptionPane.showMessageDialog(this, "한글은 입력할 수 없습니다.");
+			return;
+		} else if (birthF.getText().length() != 8 || birthF.getText().matches(".*[a-zA-Z].*")
+				|| birthF.getText().matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {
+			JOptionPane.showMessageDialog(this, "생년월일을 숫자 8자리 형식에 맞게 입력하세요");
+			return;
+		} else if (emailF.getText().matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {
+			JOptionPane.showMessageDialog(this, "이메일주소에 한글을 입력할 수 없습니다.");
+			return;
 		}
 
-//		id = idF.getText();
-		passwd = passwdF.getText();
-		birth = birthF.getText();
-		email = emailF.getText();
-		name = nameF.getText();
-		gender = manR.isSelected() ? "남" : "여";
-		
 		if (idF.getText().length() <= 12 && !idF.getText().equals("")) {
 			id = idF.getText();
-		} 
-		/*else if (passwdF.getText().length() <= 12 && !passwdF.getText().equals("")) {
-		passwd = passwdF.getText();
 		}
-		
-		else if (nameF.getText().length() <= 10 && !nameF.getText().equals("")) {
-			name = nameF.getText();
-		} 
-		else if (birthF.getText().length() == 8 && !nameF.getText().equals("") && !birthF.getText().matches(".*[a-Z].*")){
+		if (passwdF.getText().length() <= 12 && !idF.getText().equals("")) {
+			passwd = passwdF.getText();
+		}
+		if (birthF.getText().length() == 8 && !birthF.getText().matches(".*[a-zA-Z].*")
+				&& !birthF.getText().matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {
 			birth = birthF.getText();
 		}
-		else if (!emailF.getText().matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*") && !emailF.getText().equals("")){
+		if (!emailF.getText().matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {
 			email = emailF.getText();
 		}
-		name = nameF.getText();
-		gender = manR.isSelected() ? "남" : "여";*/
-		
+		if (nameF.getText().length() <= 10) {
+			name = nameF.getText();
+		}
+		gender = manR.isSelected() ? "남" : "여";
 
 		DateFormat sdFormat = new SimpleDateFormat("yyyyMMdd");
 		java.util.Date tempDate = null;
@@ -254,8 +267,6 @@ class JoinMain extends JFrame implements ActionListener {
 		dto.setMember_id(id);
 		dto.setGender(gender);
 
-		MemberDAO dao = MemberDAO.getInstance();
-
 		dao.insertMember(dto);
 
 		// 가입완료 메세지 출력
@@ -274,8 +285,6 @@ class JoinMain extends JFrame implements ActionListener {
 	}// end cancleMethod()
 
 	private void idCheckMethod(String id) {
-
-		MemberDAO dao = MemberDAO.getInstance();
 
 		boolean check = false;
 
