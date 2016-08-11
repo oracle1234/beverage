@@ -1,14 +1,10 @@
 package com.beverage.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.HashMap;
 
 import com.beverage.dto.BeverageDTO;
+import com.beverage.dto.MemberDTO;
 
 public class BeverageDAO {
 	private Connection conn;
@@ -19,7 +15,6 @@ public class BeverageDAO {
 	private static BeverageDAO dao = new BeverageDAO();
 
 	private BeverageDAO() {
-
 	}
 
 	public static BeverageDAO getInstance() {
@@ -30,8 +25,7 @@ public class BeverageDAO {
 
 	private Connection init() throws ClassNotFoundException, SQLException {
 		Class.forName("oracle.jdbc.OracleDriver");
-
-		String url = "jdbc:oracle:thin://@120.0.0.1:1521:xe";
+		String url = "jdbc:oracle:thin://@127.0.0.1:1521:xe";
 		String username = "hr";
 		String password = "a1234";
 		return DriverManager.getConnection(url, username, password);
@@ -48,13 +42,11 @@ public class BeverageDAO {
 			if (conn != null)
 				conn.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}// end stop()
 
 	public void cafeInsert(String cafe_name) {
-
 		try {
 			conn = init();
 			String sql = "insert into b_cafe(cafe_id, cafe_name) values(SEQ_b_cafe_cafe_id.nextval, ?)";
@@ -63,11 +55,9 @@ public class BeverageDAO {
 			pstmt.executeUpdate();
 
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-	}
+	}// end cafeInsert()
 
 	public HashMap<Integer, String> cafeSelect() {
 		HashMap<Integer, String> cafe_map = new HashMap<Integer, String>();
@@ -82,13 +72,10 @@ public class BeverageDAO {
 			}
 
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		return cafe_map;
-
-	}
+	}// end cafeSelect()
 
 	public void cafeBeverageInsert(int cafe_id, BeverageDTO dto) {
 
@@ -102,14 +89,132 @@ public class BeverageDAO {
 			pstmt.setString(3, dto.getBeverage_type());
 			pstmt.setString(4, dto.getBeverage_name());
 			pstmt.setString(5, dto.getBeverage_text());
-
 			pstmt.executeUpdate();
 
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}// end cafeBeverageInsert()
 
-	}
+	// 로그인 & 정보 불러오기
+	public boolean getMember(String id, String password) {
+		MemberDTO dto = MemberDTO.getInstance();
+		boolean ok = false;
+		try {
+			conn = init();
+			String sql = "SELECT * FROM b_member WHERE member_id=? AND password=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.setString(2, password);
+			if (pstmt != null) {
+				rs = pstmt.executeQuery();
+				while (rs.next()) {
+					dto.setMember_num(rs.getInt("member_num"));
+					dto.setName(rs.getString("name"));
+					dto.setGender(rs.getString("gender"));
+					dto.setEmail(rs.getString("email"));
+					dto.setBirth_date(rs.getDate("birth_date"));
+					dto.setMember_id(rs.getString("member_id"));
+					dto.setPassword(rs.getString("password"));
+					ok = true;
+				}
+			} else
+				ok = false;
+
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+		return ok;
+	}// end getMember()
+
+	// 회원가입
+	public boolean insertMember(MemberDTO dto) {
+		boolean ok = false;
+
+		try {
+			conn = init();
+			String sql = "INSERT INTO b_member(member_num,name,gender,email,birth_date,member_id,password) "
+					+ "values(?,?,?,?,?,?,?)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, dto.getMember_num());
+			pstmt.setString(2, dto.getName());
+			pstmt.setString(3, dto.getGender());
+			pstmt.setString(4, dto.getEmail());
+			pstmt.setDate(5, dto.getBirth_date());
+			pstmt.setString(6, dto.getMember_id());
+			pstmt.setString(7, dto.getPassword());
+			int rs = pstmt.executeUpdate();
+
+			if (rs > 0) {
+				ok = true;
+			} else {
+				ok = false;
+			}
+
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+		return ok;
+	}// end insertMember()
+
+	// 회원정보 수정
+	public boolean updateMember(MemberDTO updto) {
+		boolean ok = false;
+		try {
+			conn = init();
+			String sql = "UPDATE b_member SET member_num =?,name=?,gender=?,email=?,birth_date=? "
+					+ "WHERE member_id=? AND password=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, updto.getMember_num());
+			pstmt.setString(2, updto.getName());
+			pstmt.setString(3, updto.getGender());
+			pstmt.setString(4, updto.getEmail());
+			pstmt.setDate(5, updto.getBirth_date());
+			pstmt.setString(6, updto.getMember_id());
+			pstmt.setString(7, updto.getPassword());
+			int rs = pstmt.executeUpdate();
+
+			if (rs > 0) {
+				ok = true;
+			} else {
+				ok = false;
+			}
+
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+		return ok;
+	}// end updateMember()
+
+	// 회원탈퇴
+	public boolean deleteMember(String id, String password) {
+		boolean ok = false;
+		try {
+			conn = init();
+			String sql = "DELETE FROM b_member WHERE member_id=? AND password=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.setString(2, password);
+			int rs = pstmt.executeUpdate();
+
+			if (rs > 0) {
+				ok = true;
+			} else {
+				ok = false;
+			}
+
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+		return ok;
+	}// end deleteMember()
 
 }// end class

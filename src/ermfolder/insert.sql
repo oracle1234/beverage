@@ -1,6 +1,6 @@
 select * from b_member;
 insert into b_member(member_num, name, gender, email, birth_date, member_id, password) 
-values(SEQ_b_member_member_num.nextval,'유재민', '남', 'dfw@nate.com', '12341212', 'qwerasd', '123456');
+values(SEQ_b_member_member_num.nextval,'유재민', '남', 'dfw@nate.com', '20001212', 'qwerasd', '123456');
 
 
 select * from B_CAFE;
