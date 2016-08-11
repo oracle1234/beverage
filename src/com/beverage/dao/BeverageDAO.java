@@ -1,16 +1,11 @@
 package com.beverage.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.beverage.dto.BeverageDTO;
+import com.beverage.dto.ReviewDTO;
 import com.beverage.dto.MemberDTO;
 
 public class BeverageDAO {
@@ -86,8 +81,7 @@ public class BeverageDAO {
 		} finally {
 			stop();
 		}
-
-	}// end cafeSelect()
+	}// end
 
 	// 카페에 음료 추가하기
 	public void cafeBeverageInsert(int cafe_id, BeverageDTO dto) {
@@ -257,6 +251,84 @@ public class BeverageDAO {
 	}// end idCheck()
 
 	// 음료 검색하기
+	public int reviewInsert(int id, String review, int num) {
+		int cnt = 0;
+		try {
+			conn = init();
+
+			String sql = "insert into b_review(beverage_id, member_id, beverage_review, review_level) values(?,?,?,?)";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, id);
+			pstmt.setString(2, "eeee");
+			pstmt.setString(3, review);
+			pstmt.setInt(4, num);
+
+			cnt = pstmt.executeUpdate();
+
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+		return cnt;
+
+	}// end insertMethod
+
+	public ArrayList<ReviewDTO> searchMethod() {
+		ArrayList<ReviewDTO> aList = new ArrayList<ReviewDTO>();
+
+		try {
+			conn = init();
+
+			String sql = "select member_id, beverage_review , review_level from b_review";
+			pstmt = conn.prepareStatement(sql);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				ReviewDTO dto = new ReviewDTO();
+				dto.setMember_id(rs.getString("member_id"));
+				dto.setReview_levle(rs.getInt("review_level"));
+				dto.setBeverage_review(rs.getString("beverage_review"));
+				aList.add(dto);
+			}
+
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+
+		return aList;
+
+	}// searchMethod
+
+	public double levelMethod() {
+		double avg = 0;
+
+		ArrayList<ReviewDTO> aList = new ArrayList<ReviewDTO>();
+		try {
+			conn = init();
+			String sql = "select avg(review_level) from b_review group by beverage_id";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				avg = rs.getDouble("avg(review_level)");
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+
+		return Math.round(avg * 100) / (double) 100;
+	}
+
 	public ArrayList<BeverageDTO> beverageSearch(String name, String price) {
 		ArrayList<BeverageDTO> arr = new ArrayList<BeverageDTO>();
 

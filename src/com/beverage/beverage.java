@@ -7,12 +7,16 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,13 +34,16 @@ class Design extends JFrame implements ItemListener, ActionListener, MouseListen
 	JTable table;
 	JComboBox<String> locBox1, locBox2;
 	DefaultTableModel model;
+	private int crow = -1;
+
+	ArrayList<BeverageDTO> beverageList;
 
 	public Design() {
 
 		favorBtn = new JButton("즐겨찾기");
 		searchBtn = new JButton("검색");
 		JPanel jp1 = new JPanel();
-		jp1.add(new JLabel("???님 환영합니다.      						   "));
+		jp1.add(new JLabel("???님 환영합니다.      "));
 		jp1.add(favorBtn);
 
 		JPanel jp2 = new JPanel();
@@ -93,7 +100,11 @@ class Design extends JFrame implements ItemListener, ActionListener, MouseListen
 
 		searchBtn.addActionListener(this);
 		// searchBtn.addMouseListener(this);
+
+		// 즐겨찾기 버튼 연결 실행.
 		favorBtn.addActionListener(this);
+		table.addMouseListener(this);
+
 		// favorBtn.addMouseListener(this);
 
 		BeverageDAO.getInstance().cafeSelect();
@@ -112,7 +123,10 @@ class Design extends JFrame implements ItemListener, ActionListener, MouseListen
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
+		Object obj = e.getSource();
+		if (obj == table && e.getClickCount() == 2) {
+			move();
+		}
 
 	}
 
@@ -142,21 +156,44 @@ class Design extends JFrame implements ItemListener, ActionListener, MouseListen
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (model.getRowCount() != 0) {
-			model.setRowCount(0);
+		Object obj = e.getSource();
+
+		// 검색을 누를때
+		if (obj == searchBtn) {
+
+			if (model.getRowCount() != 0) {
+				model.setRowCount(0);
+			}
+
+			BeverageDAO dao = BeverageDAO.getInstance();
+
+			String s1 = (String) locBox1.getSelectedItem();
+			String s2 = (String) locBox2.getSelectedItem();
+
+			beverageList = dao.beverageSearch(s1, s2);
+			HashMap<Integer, String> map = MemberDTO.getInstance().getCafe_map();
+			for (BeverageDTO dto : beverageList) {
+				Object[] k = { map.get(dto.getCafe_id()), dto.getBeverage_name(), dto.getBeverage_price() };
+				model.addRow(k);
+			}
 		}
+	}// actionPerformed()
 
-		BeverageDAO dao = BeverageDAO.getInstance();
+	public void move() {
+		int row = table.getSelectedRow();
+		if (row < 0 || table.getValueAt(row, 0) == null)
+			return;
+		setRow(row);
+		review r = new review(beverageList.get(row));
 
-		String s1 = (String) locBox1.getSelectedItem();
-		String s2 = (String) locBox2.getSelectedItem();
+	}
 
-		ArrayList<BeverageDTO> arr = dao.beverageSearch(s1, s2);
-		HashMap<Integer, String> map = MemberDTO.getInstance().getCafe_map();
-		for (BeverageDTO dto : arr) {
-			Object[] k = { map.get(dto.getCafe_id()), dto.getBeverage_name(), dto.getBeverage_price() };
-			model.addRow(k);
-		}
+	public void setRow(int crow) {
+		this.crow = crow;
+	}// end setRow();
+
+	public int getRow() {
+		return crow;
 	}
 
 }// end class

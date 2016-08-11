@@ -119,11 +119,11 @@ class JoinMain extends JFrame implements ActionListener {
 
 			@Override
 			public void windowClosing(WindowEvent e) {
-				int msg = getConfirmMessage("회원가입을 종료하겠습니까?");
-				if (msg == 0)
-					dispose();
-				else
-					return;
+				// int msg = getConfirmMessage("회원가입을 종료하겠습니까?");
+				// if (msg == 0)
+				dispose();
+				// else
+				// return;
 			}
 		});
 
@@ -146,11 +146,11 @@ class JoinMain extends JFrame implements ActionListener {
 		if (obj == btnRegister) {
 			joinMethod();
 		} else if (obj == btnCancel) {
-			int msg = getConfirmMessage("회원가입을 종료하겠습니까?");
-			if (msg == 0)
+//			int msg = getConfirmMessage("회원가입을 종료하겠습니까?");
+//			if (msg == 0)
 				dispose();
-			else
-				return;
+//			else
+//				return;
 		} else if (obj == btnCheck) {
 			idCheckMethod(idF.getText());
 		}
