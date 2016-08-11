@@ -2,15 +2,15 @@ package com.beverage.dto;
 
 public class ReviewDTO {
 
-	private int member_id;
+	private String member_id;
 	private String beverage_review;
 	private int review_levle;
 
-	public int getMember_id() {
+	public String getMember_id() {
 		return member_id;
 	}
 
-	public void setMember_id(int member_id) {
+	public void setMember_id(String member_id) {
 		this.member_id = member_id;
 	}
 
