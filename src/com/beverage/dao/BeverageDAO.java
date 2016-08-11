@@ -6,9 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.beverage.dto.BeverageDTO;
+import com.beverage.dto.ReviewDTO;
 
 public class BeverageDAO {
 	private Connection conn;
@@ -31,7 +33,7 @@ public class BeverageDAO {
 	private Connection init() throws ClassNotFoundException, SQLException {
 		Class.forName("oracle.jdbc.OracleDriver");
 
-		String url = "jdbc:oracle:thin://@120.0.0.1:1521:xe";
+		String url = "jdbc:oracle:thin://@127.0.0.1:1521:xe";
 		String username = "hr";
 		String password = "a1234";
 		return DriverManager.getConnection(url, username, password);
@@ -111,5 +113,83 @@ public class BeverageDAO {
 		}
 
 	}
+	
+	public int reviewInsert(int id, String review, int num) {
+		int cnt = 0;
+		try {
+			conn = init();
 
+			String sql = "insert into b_review(beverage_id, member_id, beverage_review, review_level) values(?,?,?,?)";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, id);
+			pstmt.setString(2, "eeee");
+			pstmt.setString(3, review);
+			pstmt.setInt(4, num);
+
+			cnt = pstmt.executeUpdate();
+
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+		return cnt;
+
+	}// end insertMethod
+
+	public ArrayList<ReviewDTO> searchMethod() {
+		ArrayList<ReviewDTO> aList = new ArrayList<ReviewDTO>();
+
+		try {
+			conn = init();
+
+			String sql = "select member_id, beverage_review , review_level from b_review";
+			pstmt = conn.prepareStatement(sql);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				ReviewDTO dto = new ReviewDTO();
+				dto.setMember_id(rs.getString("member_id"));
+				dto.setReview_levle(rs.getInt("review_level"));
+				dto.setBeverage_review(rs.getString("beverage_review"));
+				aList.add(dto);
+			}
+
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+
+		return aList;
+
+	}// searchMethod
+
+	public double levelMethod() {
+		double avg = 0;
+
+		ArrayList<ReviewDTO> aList = new ArrayList<ReviewDTO>();
+		try {
+			conn = init();
+			String sql = "select avg(review_level) from b_review group by beverage_id";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				avg = rs.getDouble("avg(review_level)");
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+
+		return Math.round(avg*100)/(double)100;
+	}
+	
 }// end class

@@ -42,6 +42,7 @@ CREATE TABLE b_review
 	member_id varchar2(30)
 );
 
+select * from b_review
 
 CREATE TABLE b_beverage
 (
