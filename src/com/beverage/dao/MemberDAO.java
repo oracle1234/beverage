@@ -91,7 +91,7 @@ public class MemberDAO {
 			String sql = "INSERT INTO b_member(member_num,name,gender,email,birth_date,member_id,password) "
 					+ "values(SEQ_b_member_member_num.NEXTVAL,?,?,?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
-//			pstmt.setInt(1, dto.getMember_num());
+			// pstmt.setInt(1, dto.getMember_num());
 			pstmt.setString(1, dto.getName());
 			pstmt.setString(2, dto.getGender());
 			pstmt.setString(3, dto.getEmail());
@@ -169,32 +169,28 @@ public class MemberDAO {
 		}
 		return ok;
 	}// end deleteMember()
-	
-	//아이디 중복체크
-	public boolean idCheck (String id){
+
+	// 아이디 중복체크
+	public boolean idCheck(String id) {
 		boolean check = false;
 		try {
 			conn = init();
 			String sql = "SELECT member_id FROM b_member";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
-			
-			while (rs.next()){
-				if(id.equals(rs.getString("member_id"))){
+
+			while (rs.next()) {
+				if (id.equals(rs.getString("member_id"))) {
 					check = true;
 					break;
-				} 
+				}
 			}
-			
-			
+
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			stop();
 		}
-		
-		
 		return check;
 	}
 

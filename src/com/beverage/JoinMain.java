@@ -202,38 +202,35 @@ class JoinMain extends JFrame implements ActionListener {
 			JOptionPane.showMessageDialog(this, "영문, 숫자혼합 12자리까지 허용합니다");
 		} else if (nameF.getText().length() >= 10) {
 			JOptionPane.showMessageDialog(this, "이름이 너무 깁니다");
-		} else if (birthF.getText().length() != 8 && birthF.getText().matches(".*[a-Z].*") && birthF.getText().matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {
+		} else if (birthF.getText().length() != 8 && birthF.getText().matches(".*[a-Z].*")
+				&& birthF.getText().matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {
 			JOptionPane.showMessageDialog(this, "숫자 8자리 형식에 맞게 입력하세요");
-		} else if (emailF.getText().matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")){
+		} else if (emailF.getText().matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*")) {
 			JOptionPane.showMessageDialog(this, "한글은 입력할 수 없습니다.");
 		}
 
-//		id = idF.getText();
+		// id = idF.getText();
 		passwd = passwdF.getText();
 		birth = birthF.getText();
 		email = emailF.getText();
 		name = nameF.getText();
 		gender = manR.isSelected() ? "남" : "여";
-		
+
 		if (idF.getText().length() <= 12 && !idF.getText().equals("")) {
 			id = idF.getText();
-		} 
-		/*else if (passwdF.getText().length() <= 12 && !passwdF.getText().equals("")) {
-		passwd = passwdF.getText();
 		}
-		
-		else if (nameF.getText().length() <= 10 && !nameF.getText().equals("")) {
-			name = nameF.getText();
-		} 
-		else if (birthF.getText().length() == 8 && !nameF.getText().equals("") && !birthF.getText().matches(".*[a-Z].*")){
-			birth = birthF.getText();
-		}
-		else if (!emailF.getText().matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*") && !emailF.getText().equals("")){
-			email = emailF.getText();
-		}
-		name = nameF.getText();
-		gender = manR.isSelected() ? "남" : "여";*/
-		
+		/*
+		 * else if (passwdF.getText().length() <= 12 &&
+		 * !passwdF.getText().equals("")) { passwd = passwdF.getText(); }
+		 * 
+		 * else if (nameF.getText().length() <= 10 &&
+		 * !nameF.getText().equals("")) { name = nameF.getText(); } else if
+		 * (birthF.getText().length() == 8 && !nameF.getText().equals("") &&
+		 * !birthF.getText().matches(".*[a-Z].*")){ birth = birthF.getText(); }
+		 * else if (!emailF.getText().matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*") &&
+		 * !emailF.getText().equals("")){ email = emailF.getText(); } name =
+		 * nameF.getText(); gender = manR.isSelected() ? "남" : "여";
+		 */
 
 		DateFormat sdFormat = new SimpleDateFormat("yyyyMMdd");
 		java.util.Date tempDate = null;
@@ -294,12 +291,3 @@ class JoinMain extends JFrame implements ActionListener {
 	}// end idCheckMethod()
 
 }// end MemberInsert
-
-public class MemberJoin {
-
-	public static void main(String[] args) {
-		new JoinMain();
-
-	}
-
-}

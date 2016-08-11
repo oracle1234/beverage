@@ -62,13 +62,10 @@ class LoginFrame extends JFrame implements ActionListener, KeyListener {
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
 		if (obj == main.memberJoinB)
-			memberJoin();
+			new JoinMain();
 		else if (obj == main.loginB)
 			login();
 	}// end actionPerformed()
-
-	public void memberJoin() {
-	}// end memberJoin()
 
 	public void login() {
 		BeverageDAO dao = BeverageDAO.getInstance();
