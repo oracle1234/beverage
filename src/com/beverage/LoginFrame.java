@@ -10,17 +10,17 @@ import javax.swing.*;
 
 import com.beverage.dao.BeverageDAO;
 
-class Main_Frame extends JFrame implements ActionListener, KeyListener {
-	MainPanel main;
+class LoginFrame extends JFrame implements ActionListener, KeyListener {
+	LoginPanel main;
 	ImageIcon img;
 
-	public Main_Frame() {
+	public LoginFrame() {
 		// 타이틀바
-		this.setTitle("Beverage Program");
+		this.setTitle("I Will Choose a Drink for You!");
 		img = new ImageIcon("src/com/beverage/Coffee-toGo-icon.png");
 		this.setIconImage(img.getImage());
 
-		main = new MainPanel();
+		main = new LoginPanel();
 		add("Center", main);
 
 		javax.swing.UIManager.put("Button.defaultButtonFollowsFocus", true);
@@ -92,6 +92,8 @@ class Main_Frame extends JFrame implements ActionListener, KeyListener {
 			JOptionPane.showMessageDialog(this, "아이디를 입력하세요");
 			main.idT.setText("");
 			main.passwordT.setText("");
+		} else if (main.idT.getText().equals("") && main.passwordT.getText().equals("")) {
+			JOptionPane.showMessageDialog(this, "아이디 와 비밀번호를 입력하세요");
 		}
 
 	}// end login()
@@ -110,5 +112,4 @@ class Main_Frame extends JFrame implements ActionListener, KeyListener {
 	@Override
 	public void keyTyped(KeyEvent e) {
 	}
-
 }// end Main_Frame

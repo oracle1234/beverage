@@ -8,18 +8,18 @@ import java.awt.GridLayout;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class MainPanel extends JPanel {
+public class LoginPanel extends JPanel {
 	JLabel id, password, imgl;
 	JTextField idT, passwordT;
 	JButton memberJoinB, loginB;
 	JPanel labelP, idText, passwordText, top, north, buttonP, up, center, imgP;
 	EtchedBorder etch;
 
-	public MainPanel() {
+	public LoginPanel() {
 		id = new JLabel("  아이디      : ");
 		password = new JLabel("  비밀번호   : ");
 
-		Font font = new Font("sanSerif", 0, 13);
+		Font font = new Font("sanSerif", 0, 14);
 
 		id.setFont(font);
 		password.setFont(font);
@@ -28,8 +28,9 @@ public class MainPanel extends JPanel {
 		passwordT = new JTextField(17);
 
 		memberJoinB = new JButton("회원가입");
-		loginB = new JButton("로그인");
 		memberJoinB.setFont(font);
+
+		loginB = new JButton("로그인");
 		loginB.setFont(font);
 
 		imgl = new JLabel();
@@ -69,7 +70,7 @@ public class MainPanel extends JPanel {
 		center = new JPanel(new BorderLayout(0, 5));
 		center.add("North", up);
 
-		setLayout(new BorderLayout());
+		setLayout(new BorderLayout(5, 5));
 		add("Center", center);
 		add("East", new JLabel("  "));
 		add("West", new JLabel("  "));
