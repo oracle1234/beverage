@@ -7,6 +7,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -93,7 +95,12 @@ class Design extends JFrame implements ItemListener, ActionListener, MouseListen
 
 		searchBtn.addActionListener(this);
 		// searchBtn.addMouseListener(this);
+
+		// 즐겨찾기 버튼 연결 실행.
 		favorBtn.addActionListener(this);
+
+			
+
 		// favorBtn.addMouseListener(this);
 
 		BeverageDAO.getInstance().cafeSelect();
@@ -142,21 +149,32 @@ class Design extends JFrame implements ItemListener, ActionListener, MouseListen
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (model.getRowCount() != 0) {
-			model.setRowCount(0);
+		Object obj = e.getSource();
+		
+		//검색을 누를때
+		if (obj == searchBtn) {
+
+			if (model.getRowCount() != 0) {
+				model.setRowCount(0);
+			}
+
+			BeverageDAO dao = BeverageDAO.getInstance();
+
+			String s1 = (String) locBox1.getSelectedItem();
+			String s2 = (String) locBox2.getSelectedItem();
+
+			ArrayList<BeverageDTO> arr = dao.beverageSearch(s1, s2);
+			HashMap<Integer, String> map = MemberDTO.getInstance().getCafe_map();
+			for (BeverageDTO dto : arr) {
+				Object[] k = { map.get(dto.getCafe_id()), dto.getBeverage_name(), dto.getBeverage_price() };
+				model.addRow(k);
+			}
+		}else if(obj == favorBtn){
+			
+			
+			
 		}
-
-		BeverageDAO dao = BeverageDAO.getInstance();
-
-		String s1 = (String) locBox1.getSelectedItem();
-		String s2 = (String) locBox2.getSelectedItem();
-
-		ArrayList<BeverageDTO> arr = dao.beverageSearch(s1, s2);
-		HashMap<Integer, String> map = MemberDTO.getInstance().getCafe_map();
-		for (BeverageDTO dto : arr) {
-			Object[] k = { map.get(dto.getCafe_id()), dto.getBeverage_name(), dto.getBeverage_price() };
-			model.addRow(k);
-		}
+		
 	}
 
 }// end class
