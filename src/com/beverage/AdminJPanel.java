@@ -1,10 +1,6 @@
 package com.beverage;
 
-import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
@@ -21,13 +17,14 @@ public class AdminJPanel extends JPanel {
 	JTextField cafeName;
 	JButton cafeInBtn;
 
-	JComboBox<String> cafeBox, beverageBox;
+	JComboBox<String> cafeBox;
 	JButton cafeDelBtn;
 
 	JButton registerBtn;
 	JLabel cafeTitle;
 
-	JTextField jfPrice, jfType, jfName, jfText;
+	JComboBox<String> b_CafeBox, b_TypeBox;
+	JTextField jfPrice, jfName, jfText;
 
 	public AdminJPanel() {
 		// 카페 등록
@@ -43,9 +40,15 @@ public class AdminJPanel extends JPanel {
 		cafeDelBtn = new JButton("삭제");
 
 		// 음료 등록
-		beverageBox = new JComboBox<String>(model1);
+		b_CafeBox = new JComboBox<String>(model1);
 		jfPrice = new JTextField(10);
-		jfType = new JTextField(10);
+
+		DefaultComboBoxModel<String> model2 = new DefaultComboBoxModel<String>();
+		model2.addElement("커피");
+		model2.addElement("티");
+		model2.addElement("주스");
+		model2.addElement("기타");
+		b_TypeBox = new JComboBox<String>(model2);
 		jfName = new JTextField(10);
 		jfText = new JTextField(10);
 
@@ -71,9 +74,9 @@ public class AdminJPanel extends JPanel {
 
 		// 음료등록
 		JPanel bein = new JPanel();
-		bein.add(beverageBox);
+		bein.add(b_CafeBox);
 		bein.add(jfPrice);
-		bein.add(jfType);
+		bein.add(b_TypeBox);
 		bein.add(jfName);
 		bein.add(jfText);
 		JPanel bein2 = new JPanel();
