@@ -37,7 +37,7 @@ public class MainPanel extends JPanel {
 		etch = new EtchedBorder(EtchedBorder.RAISED);
 		imgl.setBorder(etch);
 
-		imgP = new JPanel(new GridLayout(1, 1));
+		imgP = new JPanel();
 		imgP.add(imgl);
 
 		labelP = new JPanel(new GridLayout(2, 1));
@@ -68,7 +68,6 @@ public class MainPanel extends JPanel {
 
 		center = new JPanel(new BorderLayout(0, 5));
 		center.add("North", up);
-		center.add("South", imgP);
 
 		setLayout(new BorderLayout());
 		add("Center", center);

@@ -28,8 +28,8 @@ class Main_Frame extends JFrame implements ActionListener, KeyListener {
 
 		main.idT.addKeyListener(this);
 		main.passwordT.addKeyListener(this);
-		main.memberJoinB.addKeyListener(this);
-		main.loginB.addActionListener(this);
+		// main.memberJoinB.addKeyListener(this);
+		// main.loginB.addActionListener(this);
 
 		this.addWindowListener(new WindowAdapter() {
 			@Override
@@ -77,6 +77,8 @@ class Main_Frame extends JFrame implements ActionListener, KeyListener {
 		if (!main.idT.getText().equals("") && !main.passwordT.getText().equals("")) {
 			check = dao.getMember(main.idT.getText(), main.passwordT.getText());
 			if (check == true) {
+				JOptionPane.showMessageDialog(this, "로그인 성공");
+				// 로그인 후 화면전환 메소드
 
 			} else {
 				JOptionPane.showMessageDialog(this, "아이디 또는 비밀번호를 다시 확인하세요.");
