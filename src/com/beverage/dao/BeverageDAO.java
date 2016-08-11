@@ -217,4 +217,28 @@ public class BeverageDAO {
 		return ok;
 	}// end deleteMember()
 
+	// 아이디 중복체크
+	public boolean idCheck(String id) {
+		boolean check = false;
+		try {
+			conn = init();
+			String sql = "SELECT member_id FROM b_member";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				if (id.equals(rs.getString("member_id"))) {
+					check = true;
+					break;
+				}
+			}
+
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+		return check;
+	}// end idCheck()
+
 }// end class
