@@ -1,9 +1,11 @@
 package com.beverage.dao;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.beverage.dto.BeverageDTO;
+import com.beverage.dto.ReviewDTO;
 import com.beverage.dto.MemberDTO;
 
 public class BeverageDAO {
@@ -46,6 +48,7 @@ public class BeverageDAO {
 		}
 	}// end stop()
 
+	// 카페 정보 등록
 	public void cafeInsert(String cafe_name) {
 		try {
 			conn = init();
@@ -56,11 +59,13 @@ public class BeverageDAO {
 
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
+		} finally {
+			stop();
 		}
 	}// end cafeInsert()
 
-	public HashMap<Integer, String> cafeSelect() {
-		HashMap<Integer, String> cafe_map = new HashMap<Integer, String>();
+	// 등록된 카페 정보 가지고 오기
+	public void cafeSelect() {
 		try {
 			conn = init();
 			String sql = "select * from b_cafe";
@@ -68,13 +73,14 @@ public class BeverageDAO {
 			rs = stmt.executeQuery(sql);
 
 			while (rs.next()) {
-				cafe_map.put(rs.getInt("cafe_id"), rs.getString("cafe_name"));
+				MemberDTO.getInstance().getCafe_map().put(rs.getInt("cafe_id"), rs.getString("cafe_name"));
 			}
 
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
+		} finally {
+			stop();
 		}
-		return cafe_map;
 	}// end cafeSelect()
 
 	public void cafeBeverageInsert(int cafe_id, BeverageDTO dto) {
@@ -93,6 +99,8 @@ public class BeverageDAO {
 
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
+		} finally {
+			stop();
 		}
 	}// end cafeBeverageInsert()
 
@@ -240,5 +248,129 @@ public class BeverageDAO {
 		}
 		return check;
 	}// end idCheck()
+
+	public int reviewInsert(int id, String review, int num) {
+		int cnt = 0;
+		try {
+			conn = init();
+
+			String sql = "insert into b_review(beverage_id, member_id, beverage_review, review_level) values(?,?,?,?)";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, id);
+			pstmt.setString(2, "eeee");
+			pstmt.setString(3, review);
+			pstmt.setInt(4, num);
+
+			cnt = pstmt.executeUpdate();
+
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+		return cnt;
+
+	}// end insertMethod
+
+	public ArrayList<ReviewDTO> searchMethod() {
+		ArrayList<ReviewDTO> aList = new ArrayList<ReviewDTO>();
+
+		try {
+			conn = init();
+
+			String sql = "select member_id, beverage_review , review_level from b_review";
+			pstmt = conn.prepareStatement(sql);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				ReviewDTO dto = new ReviewDTO();
+				dto.setMember_id(rs.getString("member_id"));
+				dto.setReview_levle(rs.getInt("review_level"));
+				dto.setBeverage_review(rs.getString("beverage_review"));
+				aList.add(dto);
+			}
+
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+
+		return aList;
+
+	}// searchMethod
+
+	public double levelMethod() {
+		double avg = 0;
+
+		ArrayList<ReviewDTO> aList = new ArrayList<ReviewDTO>();
+		try {
+			conn = init();
+			String sql = "select avg(review_level) from b_review group by beverage_id";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				avg = rs.getDouble("avg(review_level)");
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+
+		return Math.round(avg * 100) / (double) 100;
+	}
+
+	public ArrayList<BeverageDTO> beverageSearch(String name, String price) {
+		ArrayList<BeverageDTO> arr = new ArrayList<BeverageDTO>();
+
+		String[] strarr = price.split("~");
+
+		try {
+			conn = init();
+
+			String sql = "select * from b_beverage where beverage_type =? " + " and beverage_price >= ?"
+					+ "and beverage_price <= ?" + " order by beverage_price";
+
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, name);
+			if (price == "전체") {
+				pstmt.setInt(2, 0);
+				pstmt.setInt(3, 10000);
+			} else {
+				pstmt.setInt(2, Integer.parseInt(strarr[0]));
+				pstmt.setInt(3, Integer.parseInt(strarr[1]));
+			}
+			// pstmt.setString(1, "%" + serch.toLowerCase() + "%");
+			// pstmt.setString(2, serch);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				BeverageDTO dto = new BeverageDTO();
+				dto.setBeverage_id(rs.getInt("beverage_id"));
+				dto.setCafe_id(rs.getInt("cafe_id"));
+				dto.setBeverage_price(rs.getInt("beverage_price"));
+				dto.setBeverage_type(rs.getString("beverage_type"));
+				dto.setBeverage_name(rs.getString("beverage_name"));
+				dto.setBeverage_text(rs.getString("beverage_text"));
+				arr.add(dto);
+			}
+
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+
+		return arr;
+	}
 
 }// end class
