@@ -94,6 +94,7 @@ public class BeverageDAO {
 		}
 	}
 
+	// 카페에 음료 추가하기
 	public void cafeBeverageInsert(int cafe_id, BeverageDTO dto) {
 
 		try {
@@ -118,6 +119,7 @@ public class BeverageDAO {
 
 	}
 
+	// 음료 검색하기
 	public ArrayList<BeverageDTO> beverageSearch(String name, String price) {
 		ArrayList<BeverageDTO> arr = new ArrayList<BeverageDTO>();
 
@@ -138,8 +140,6 @@ public class BeverageDAO {
 				pstmt.setInt(2, Integer.parseInt(strarr[0]));
 				pstmt.setInt(3, Integer.parseInt(strarr[1]));
 			}
-			// pstmt.setString(1, "%" + serch.toLowerCase() + "%");
-			// pstmt.setString(2, serch);
 
 			rs = pstmt.executeQuery();
 

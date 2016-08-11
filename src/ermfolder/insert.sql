@@ -152,30 +152,3 @@ values(SEQ_b_beverage_beverage_id.nextval, 4, 4200, '기타', '녹차요거트',
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
