@@ -1,9 +1,6 @@
 package com.beverage;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -11,8 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -23,7 +18,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -33,20 +27,11 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
-import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import com.beverage.dao.BeverageDAO;
 import com.beverage.dto.BeverageDTO;
 import com.beverage.dto.ReviewDTO;
-
-public class ex01 {
-
-	public static void main(String[] args) {
-		new review();
-	}
-
-}
 
 class review extends JFrame implements ActionListener, ItemListener {
 	JMenuBar menu;
@@ -59,12 +44,11 @@ class review extends JFrame implements ActionListener, ItemListener {
 	JLabel score, jl;
 	DefaultTableModel model;
 	JTable table;
-	BeverageDTO dto;
 	JRadioButton five, four, three, two, one;
 	int jumsu;
 
-	public review() {
-		this.setTitle("리뷰");
+	public review(BeverageDTO beverageDto) {
+		this.setTitle(beverageDto.getBeverage_name());
 		String path = "src/com/beverage/";
 		coffee = new ImageIcon(path + "starbuks.JPG");
 		Image img = coffee.getImage().getScaledInstance(200, 100, Image.SCALE_SMOOTH);
@@ -84,7 +68,7 @@ class review extends JFrame implements ActionListener, ItemListener {
 
 		jp2 = new JPanel();
 		ta = new JTextArea(20, 45);
-		ta.setText("아메리카노 좋아 좋아 좋아~ ");
+		ta.setText(beverageDto.getBeverage_text());
 		jp2.add(ta);
 
 		Object[] obj = { "회원아이디", "리뷰평", "점수" };
@@ -145,6 +129,7 @@ class review extends JFrame implements ActionListener, ItemListener {
 		add(jp3);
 
 		showData();
+
 		register.addActionListener(this);
 		five.addItemListener(this);
 		four.addItemListener(this);
@@ -157,28 +142,29 @@ class review extends JFrame implements ActionListener, ItemListener {
 			public void windowClosing(WindowEvent e) {
 				int msg = getConfirmMessage("창을 닫으시겠습니까?");
 				if (msg == 0)
-					System.exit(0);
+					dispose();
 				else
 					return;
 			}
 		});
-		
+
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		
+
 		this.setSize(520, 550);
 		this.setVisible(true);
 
 	}
-	
+
 	public int getConfirmMessage(String msg) {
 		JLabel label = new JLabel(msg);
 		label.setFont(new Font("sanSerif", 0, 12));
 		label.setForeground(new Color(255, 0, 0)); // Color.red
 		return JOptionPane.showConfirmDialog(this, label, "메세지", JOptionPane.YES_NO_OPTION);
 	}// end getConfirmMessage()////////////////////////////////////////////////
-	
+
 	public void showData() {
 		BeverageDAO dao = BeverageDAO.getInstance();
+
 		ArrayList<ReviewDTO> dto = dao.searchMethod();
 
 		for (ReviewDTO reviewData : dto) {
@@ -191,6 +177,7 @@ class review extends JFrame implements ActionListener, ItemListener {
 	public void actionPerformed(ActionEvent e) {
 		BeverageDAO dao = BeverageDAO.getInstance();
 		int a = dao.reviewInsert(13, tf.getText(), jumsu);
+
 		if (a > 0) {
 			ArrayList<ReviewDTO> dto = dao.searchMethod();
 
@@ -201,10 +188,8 @@ class review extends JFrame implements ActionListener, ItemListener {
 		}
 		tf.setText("");
 		tf.requestFocus();
-		
-		
+
 	}// actionPerformed()
-	
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
