@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 
 import com.beverage.dto.BeverageDTO;
 
@@ -30,7 +31,7 @@ public class BeverageDAO {
 	private Connection init() throws ClassNotFoundException, SQLException {
 		Class.forName("oracle.jdbc.OracleDriver");
 
-		String url = "jdbc:oracle:thin://@127.0.0.1:1521:xe";
+		String url = "jdbc:oracle:thin://@120.0.0.1:1521:xe";
 		String username = "hr";
 		String password = "a1234";
 		return DriverManager.getConnection(url, username, password);
@@ -68,7 +69,28 @@ public class BeverageDAO {
 
 	}
 
-	public void cafeDeverageInsert(int cafe_id, BeverageDTO dto) {
+	public HashMap<Integer, String> cafeSelect() {
+		HashMap<Integer, String> cafe_map = new HashMap<Integer, String>();
+		try {
+			conn = init();
+			String sql = "select * from b_cafe";
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+
+			while (rs.next()) {
+				cafe_map.put(rs.getInt("cafe_id"), rs.getString("cafe_name"));
+			}
+
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return cafe_map;
+
+	}
+
+	public void cafeBeverageInsert(int cafe_id, BeverageDTO dto) {
 
 		try {
 			conn = init();

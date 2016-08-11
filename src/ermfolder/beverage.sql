@@ -49,7 +49,7 @@ CREATE TABLE b_beverage
 	cafe_id number NOT NULL,
 	beverage_price number(5,0) NOT NULL,
 	beverage_type varchar2(9) NOT NULL,
-	beverage_name varchar2(30) NOT NULL,
+	beverage_name varchar2(50) NOT NULL,
 	beverage_text varchar2(1000),
 	PRIMARY KEY (beverage_id)
 );
