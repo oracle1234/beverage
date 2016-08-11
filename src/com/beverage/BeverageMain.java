@@ -23,7 +23,8 @@ public class BeverageMain extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		new BeverageMain();
+		// new BeverageMain();
+		new LoginFrame();
 	}
 
 }
