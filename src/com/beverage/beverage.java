@@ -1,22 +1,24 @@
 package com.beverage;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -35,16 +37,56 @@ class Design extends JFrame implements ItemListener, ActionListener, MouseListen
 	JComboBox<String> locBox1, locBox2;
 	DefaultTableModel model;
 	private int crow = -1;
+	// 배경
+	JLabel scrollPane;
+	ImageIcon background, icon;
 
 	ArrayList<BeverageDTO> beverageList;
 
 	public Design() {
 
-		favorBtn = new JButton("즐겨찾기");
-		searchBtn = new JButton("검색");
+		// 찾기버튼
+		searchBtn = new JButton(new ImageIcon("C:\\Users\\user1\\Desktop\\javagraphics\\100search.png"));
+		searchBtn.setBounds(10, 10, 310, 310);
+
+		// searchBtn.setBackground(Color.red);
+
+		searchBtn.setBorderPainted(false);// 버튼 테두리 설정
+		searchBtn.setContentAreaFilled(false); // 버튼 영역 배경 표시 설정
+		searchBtn.setFocusPainted(false); // 포커스 표시 설정
+		searchBtn.setContentAreaFilled(false);
+
+		// 즐겨찾기버튼
+		favorBtn = new JButton(new ImageIcon("C:\\Users\\user1\\Desktop\\javagraphics\\finlog.png"));
+
+		// favorBtn.setBackground(Color.red);
+
+		favorBtn.setBorderPainted(false);// 버튼 테두리 설정
+		favorBtn.setContentAreaFilled(false); // 버튼 영역 배경 표시 설정
+		favorBtn.setFocusPainted(false); // 포커스 표시 설정
+		favorBtn.setContentAreaFilled(false);
+
+		////
+
 		JPanel jp1 = new JPanel();
 		jp1.add(new JLabel("???님 환영합니다.      "));
 		jp1.add(favorBtn);
+
+		icon = new ImageIcon("C:\\Users\\user1\\Desktop\\javagraphics\\back.jpg");
+		JPanel background = new JPanel() {
+			public void paintComponent(Graphics g) {
+				// Approach 1: Dispaly image at at full size
+				g.drawImage(icon.getImage(), 10, 10, null);
+				// Approach 2: Scale image to size of component
+				Dimension d = getSize();
+				g.drawImage(icon.getImage(), 10, 10, d.width, d.height, null);
+				// Approach 3: Fix the image position in the scroll pane
+//				Point p = scrollPane.getViewport().getViewPosition();
+//				g.drawImage(icon.getImage(), p.x, p.y, null);
+				setOpaque(false); // 그림을 표시하게 설정,투명하게 조절
+				super.paintComponent(g);
+			}
+		};
 
 		JPanel jp2 = new JPanel();
 		Object[] obj = { "카페이름", "음료명", "커피가격" };
@@ -90,7 +132,12 @@ class Design extends JFrame implements ItemListener, ActionListener, MouseListen
 		jp3.add(jp1);
 		jp3.add(jp2);
 
+		setLayout(new BorderLayout());
+		scrollPane = new JLabel(icon);
+		setContentPane(scrollPane);
+
 		setLayout(new GridLayout(2, 1));
+		setLayout(new FlowLayout());
 		add(jp3);
 		add(new JScrollPane(table));
 
