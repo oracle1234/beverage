@@ -459,7 +459,7 @@ public class BeverageDAO {
 			String sql="select * from b_favor "
 					+ "where beverage_id=?";
 			pstmt = conn.prepareStatement(sql);
-		pstmt.setArray(1, fav.get);
+//		pstmt.setArray(1, fav.get);
 			
 			
 			pstmt.executeQuery();
