@@ -4,7 +4,7 @@ public class ReviewDTO {
 
 	private String member_id;
 	private String beverage_review;
-	private int review_levle;
+	private int review_level;
 
 	public String getMember_id() {
 		return member_id;
@@ -22,12 +22,12 @@ public class ReviewDTO {
 		this.beverage_review = beverage_review;
 	}
 
-	public int getReview_levle() {
-		return review_levle;
+	public int getReview_level() {
+		return review_level;
 	}
 
-	public void setReview_levle(int review_levle) {
-		this.review_levle = review_levle;
+	public void setReview_level(int review_level) {
+		this.review_level = review_level;
 	}
 
 }

@@ -1,6 +1,8 @@
 package com.beverage;
 
+import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -30,20 +32,23 @@ import com.beverage.dto.MemberDTO;
 
 class Design extends JFrame implements ItemListener, ActionListener, MouseListener {
 
-	JButton searchBtn, favorBtn;
+	JButton searchBtn, MypageBtn, favorBtn; 
 	JTable table;
 	JComboBox<String> locBox1, locBox2;
 	DefaultTableModel model;
 	private int crow = -1;
 
 	ArrayList<BeverageDTO> beverageList;
+	MemberDTO dto= MemberDTO.getInstance();
 
 	public Design() {
 
-		favorBtn = new JButton("즐겨찾기");
+		MypageBtn = new JButton("My Page");
 		searchBtn = new JButton("검색");
+		favorBtn= new JButton("즐겨찾기");
 		JPanel jp1 = new JPanel();
-		jp1.add(new JLabel("???님 환영합니다.      "));
+		jp1.add(new JLabel( dto.getName()  +"님 환영합니다.      "));
+		jp1.add(MypageBtn);
 		jp1.add(favorBtn);
 
 		JPanel jp2 = new JPanel();
@@ -102,14 +107,20 @@ class Design extends JFrame implements ItemListener, ActionListener, MouseListen
 		// searchBtn.addMouseListener(this);
 
 		// 즐겨찾기 버튼 연결 실행.
-		favorBtn.addActionListener(this);
+		MypageBtn.addActionListener(this);
 		table.addMouseListener(this);
+		favorBtn.addActionListener(this);
 
-		// favorBtn.addMouseListener(this);
+		// MypageBtn.addMouseListener(this);
 
 		BeverageDAO.getInstance().cafeSelect();
 	
 		setSize(500, 400);
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Dimension di = tk.getScreenSize();
+		Dimension di1 = this.getSize();
+		this.setLocation((int) ((di.getWidth() - this.getWidth()) / 2 - (di1.getWidth() - this.getWidth()) / 2),
+				(int) ((di.getHeight() - this.getHeight()) / 2 - (di1.getHeight() - this.getHeight()) / 2));
 		setVisible(true);
 		setResizable(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -177,7 +188,10 @@ class Design extends JFrame implements ItemListener, ActionListener, MouseListen
 				Object[] k = { map.get(dto.getCafe_id()), dto.getBeverage_name(), dto.getBeverage_price() };
 				model.addRow(k);
 			}
+		} else if (obj == MypageBtn) {
+			new mypage();
 		}
+
 	}// actionPerformed()
 
 	public void move() {

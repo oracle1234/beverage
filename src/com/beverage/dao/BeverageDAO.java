@@ -1,11 +1,6 @@
 package com.beverage.dao;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -22,7 +17,6 @@ public class BeverageDAO {
 	private static BeverageDAO dao = new BeverageDAO();
 
 	private BeverageDAO() {
-
 	}
 
 	public static BeverageDAO getInstance() {
@@ -33,7 +27,6 @@ public class BeverageDAO {
 
 	private Connection init() throws ClassNotFoundException, SQLException {
 		Class.forName("oracle.jdbc.OracleDriver");
-
 		String url = "jdbc:oracle:thin://@127.0.0.1:1521:xe";
 		String username = "hr";
 		String password = "a1234";
@@ -51,14 +44,12 @@ public class BeverageDAO {
 			if (conn != null)
 				conn.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}// end stop()
 
 	// 카페 정보 등록
 	public void cafeInsert(String cafe_name) {
-
 		try {
 			conn = init();
 			String sql = "insert into b_cafe(cafe_id, cafe_name) values(SEQ_b_cafe_cafe_id.nextval, ?)";
@@ -67,13 +58,11 @@ public class BeverageDAO {
 			pstmt.executeUpdate();
 
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			stop();
 		}
-
-	}
+	}// end cafeInsert()
 
 	// 등록된 카페 정보 가지고 오기
 	public void cafeSelect() {
@@ -88,12 +77,11 @@ public class BeverageDAO {
 			}
 
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			stop();
 		}
-	}
+	}// end cafeSelect()
 
 	public void cafeBeverageInsert(int cafe_id, BeverageDTO dto) {
 
@@ -107,19 +95,163 @@ public class BeverageDAO {
 			pstmt.setString(3, dto.getBeverage_type());
 			pstmt.setString(4, dto.getBeverage_name());
 			pstmt.setString(5, dto.getBeverage_text());
-
 			pstmt.executeUpdate();
 
 		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			stop();
 		}
+	}// end cafeBeverageInsert()
 
-	}
+
 	
-	public int reviewInsert(int id, String review, int jumsu) {
+
+
+	// 로그인 & 정보 불러오기
+	public boolean getMember(String id, String password) {
+		MemberDTO dto = MemberDTO.getInstance();
+		boolean ok = false;
+		try {
+			conn = init();
+			String sql = "SELECT * FROM b_member WHERE member_id=? AND password=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.setString(2, password);
+			if (pstmt != null) {
+				rs = pstmt.executeQuery();
+				while (rs.next()) {
+					dto.setMember_num(rs.getInt("member_num"));
+					dto.setName(rs.getString("name"));
+					dto.setGender(rs.getString("gender"));
+					dto.setEmail(rs.getString("email"));
+					dto.setBirth_date(rs.getDate("birth_date"));
+					dto.setMember_id(rs.getString("member_id"));
+					dto.setPassword(rs.getString("password"));
+					ok = true;
+				}
+			} else
+				ok = false;
+
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+		return ok;
+	}// end getMember()
+
+	// 회원가입
+	public boolean insertMember(MemberDTO dto) {
+		boolean ok = false;
+
+		try {
+			conn = init();
+			String sql = "INSERT INTO b_member(member_num,name,gender,email,birth_date,member_id,password) "
+					+ "values(SEQ_b_member_member_num.nextval,?,?,?,?,?,?)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getName());
+			pstmt.setString(2, dto.getGender());
+			pstmt.setString(3, dto.getEmail());
+			pstmt.setDate(4, dto.getBirth_date());
+			pstmt.setString(5, dto.getMember_id());
+			pstmt.setString(6, dto.getPassword());
+			int rs = pstmt.executeUpdate();
+
+			if (rs > 0) {
+				ok = true;
+			} else {
+				ok = false;
+			}
+
+		} catch (SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+		return ok;
+	}// end insertMember()
+
+	// 회원정보 수정
+	public boolean updateMember(MemberDTO updto) {
+		boolean ok = false;
+		
+		try {
+			conn = init();
+			String sql = "UPDATE b_member SET email=?, password=? "
+					+ "WHERE member_id=? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, updto.getEmail());
+			pstmt.setString(2, updto.getPassword());
+			pstmt.setString(3, updto.getMember_id());
+			
+			int rs = pstmt.executeUpdate();
+
+			if (rs > 0) {
+				ok = true;
+			} else {
+				ok = false;
+			}
+
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+		return ok;
+	}// end updateMember()
+
+	// 회원탈퇴
+	public boolean deleteMember(String id, String password) {
+		boolean ok = false;
+		try {
+			conn = init();
+			String sql = "DELETE FROM b_member WHERE member_id=? AND password=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.setString(2, password);
+			int rs = pstmt.executeUpdate();
+
+			if (rs > 0) {
+				ok = true;
+			} else {
+				ok = false;
+			}
+
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+		return ok;
+	}// end deleteMember()
+
+	// 아이디 중복체크
+	public boolean idCheck(String id) {
+		boolean check = false;
+		try {
+			conn = init();
+			String sql = "SELECT member_id FROM b_member";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				if (id.equals(rs.getString("member_id"))) {
+					check = true;
+					break;
+				}
+			}
+
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+		return check;
+	}// end idCheck()
+
+	public int reviewInsert(int beverage_id, String member_id, String beverage_review, int review_level) {
+
 		int cnt = 0;
 		try {
 			conn = init();
@@ -127,10 +259,10 @@ public class BeverageDAO {
 			String sql = "insert into b_review(beverage_id, member_id, beverage_review, review_level) values(?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setInt(1, id);
-			pstmt.setString(2, "eeee");
-			pstmt.setString(3, review);
-			pstmt.setInt(4, jumsu);
+			pstmt.setInt(1, beverage_id);
+			pstmt.setString(2, member_id);
+			pstmt.setString(3, beverage_review);
+			pstmt.setInt(4, review_level);
 
 			cnt = pstmt.executeUpdate();
 
@@ -143,7 +275,7 @@ public class BeverageDAO {
 		return cnt;
 
 	}// end insertMethod
-	
+
 	public void favorInsert(int member_num, int beverage_id, String cafe_name, String beverage_name) {
 	
 		try {
@@ -168,21 +300,23 @@ public class BeverageDAO {
 
 	}// end insertMethod
 	
-	public ArrayList<ReviewDTO> searchMethod() {
+
+	public ArrayList<ReviewDTO> searchMethod(int id) {
 		ArrayList<ReviewDTO> aList = new ArrayList<ReviewDTO>();
 
 		try {
 			conn = init();
 
-			String sql = "select member_id, beverage_review , review_level from b_review";
+			String sql = "select member_id, beverage_review , review_level from b_review where beverage_id=?";
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, id);
 
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
 				ReviewDTO dto = new ReviewDTO();
 				dto.setMember_id(rs.getString("member_id"));
-				dto.setReview_levle(rs.getInt("review_level"));
+				dto.setReview_level(rs.getInt("review_level"));
 				dto.setBeverage_review(rs.getString("beverage_review"));
 				aList.add(dto);
 			}
@@ -218,9 +352,9 @@ public class BeverageDAO {
 			stop();
 		}
 
-		return Math.round(avg*100)/(double)100;
+		return Math.round(avg * 100) / (double) 100;
 	}
-	
+
 	public ArrayList<BeverageDTO> beverageSearch(String name, String price) {
 		ArrayList<BeverageDTO> arr = new ArrayList<BeverageDTO>();
 
