@@ -25,3 +25,15 @@ delete from b_beverage where beverage_id = '1';
 select * from b_cafe;
 
 select * from b_review;
+
+
+select * from b_beverage order by beverage_price;
+
+select 
+from b_favor f, b_member m, b_review r
+
+
+
+select avg(review_level) from b_review where beverage_id = ? group by beverage_id;
+
+

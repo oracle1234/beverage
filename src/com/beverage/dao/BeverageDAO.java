@@ -370,14 +370,15 @@ public class BeverageDAO {
 
 	}// searchMethod
 
-	public double levelMethod() {
+	public double levelMethod(int b_id) {
 		double avg = 0;
 
 		ArrayList<ReviewDTO> aList = new ArrayList<ReviewDTO>();
 		try {
 			conn = init();
-			String sql = "select avg(review_level) from b_review group by beverage_id";
+			String sql = "select avg(review_level) from b_review where beverage_id = ? group by beverage_id";
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, b_id);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {

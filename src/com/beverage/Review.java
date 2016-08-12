@@ -38,7 +38,7 @@ import com.beverage.dto.BeverageDTO;
 import com.beverage.dto.MemberDTO;
 import com.beverage.dto.ReviewDTO;
 
-class review extends JFrame implements ActionListener, ItemListener {
+class Review extends JFrame implements ActionListener {
 	JMenuBar menu;
 	JPanel jp1, jp2, jp3, sp1, sp2, p1, p2, p3;
 	JTextArea ta;
@@ -55,7 +55,7 @@ class review extends JFrame implements ActionListener, ItemListener {
 
 	BeverageDTO dto;
 
-	public review(BeverageDTO beverageDto) {
+	public Review(BeverageDTO beverageDto) {
 		this.setTitle(beverageDto.getBeverage_name());
 		ImageIcon icon = new ImageIcon("src/com/beverage/Coffee-toGo-icon.png");
 		this.setIconImage(icon.getImage());
@@ -81,7 +81,7 @@ class review extends JFrame implements ActionListener, ItemListener {
 
 		sp1 = new JPanel();
 		sp2 = new JPanel();
-		score = new JLabel("평점   " + BeverageDAO.getInstance().levelMethod());
+		score = new JLabel("평점   " + BeverageDAO.getInstance().levelMethod(dto.getBeverage_id()));
 		sp1.add(cofBtn);
 		sp2.add(score);
 
@@ -155,20 +155,8 @@ class review extends JFrame implements ActionListener, ItemListener {
 
 		register.addActionListener(this);
 		tf.addActionListener(this);
-		five.addItemListener(this);
-		four.addItemListener(this);
-		three.addItemListener(this);
-		two.addItemListener(this);
-		one.addItemListener(this);
 
-		/*
-		 * this.addWindowListener(new WindowAdapter() {
-		 * 
-		 * @Override public void windowClosing(WindowEvent e) { dispose(); } });
-		 */
-
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		this.setSize(520, 550);
 		Toolkit tk = Toolkit.getDefaultToolkit();
@@ -204,8 +192,18 @@ class review extends JFrame implements ActionListener, ItemListener {
 			model.removeRow(0);
 		BeverageDAO dao = BeverageDAO.getInstance();
 
-		while (model.getRowCount() != 0) {
-			model.removeRow(0);
+		if (five.isSelected())
+			jumsu = Integer.parseInt(five.getText());
+		else if (four.isSelected())
+			jumsu = Integer.parseInt(four.getText());
+		else if (three.isSelected())
+			jumsu = Integer.parseInt(three.getText());
+		else if (two.isSelected())
+			jumsu = Integer.parseInt(two.getText());
+		else if (one.isSelected())
+			jumsu = Integer.parseInt(one.getText());
+		else {
+			jumsu = 0;
 		}
 
 		int a = dao.reviewInsert(dto.getBeverage_id(), MemberDTO.getInstance().getMember_id(), tf.getText(), jumsu);
@@ -223,23 +221,4 @@ class review extends JFrame implements ActionListener, ItemListener {
 		tf.requestFocus();
 	}// actionPerformed()
 
-	@Override
-	public void itemStateChanged(ItemEvent e) {
-		Object obj = e.getSource();
-
-		if (five.isSelected())
-			jumsu = Integer.parseInt(five.getText());
-		else if (four.isSelected())
-			jumsu = Integer.parseInt(four.getText());
-		else if (three.isSelected())
-			jumsu = Integer.parseInt(three.getText());
-		else if (two.isSelected())
-			jumsu = Integer.parseInt(two.getText());
-		else if (one.isSelected())
-			jumsu = Integer.parseInt(one.getText());
-		else {
-			jumsu = 0;
-		}
-
-	}// itemStateChanged
 }
