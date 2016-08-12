@@ -2,9 +2,11 @@ package com.beverage;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -135,15 +137,16 @@ class MemberJoin extends JFrame implements ActionListener {
 
 			@Override
 			public void windowClosing(WindowEvent e) {
-				int msg = getConfirmMessage("정말로 종료하겠습니까?");
-				if (msg == 0)
-					System.exit(0);
-				else
-					return;
+				dispose();
 			}
 		});
 
 		setSize(500, 350);
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Dimension di = tk.getScreenSize();
+		Dimension di1 = this.getSize();
+		this.setLocation((int) ((di.getWidth() - this.getWidth()) / 2 - (di1.getWidth() - this.getWidth()) / 2),
+				(int) ((di.getHeight() - this.getHeight()) / 2 - (di1.getHeight() - this.getHeight()) / 2));
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 	}
@@ -160,15 +163,10 @@ class MemberJoin extends JFrame implements ActionListener {
 		Object obj = e.getSource();
 
 		if (obj == btnRegister) {
-
 			this.joinMethod();
-
 		} else if (obj == btnCancel) {
-
 			this.cancelMethod();
-
 		} else if (obj == btnCheck) {
-
 			this.idCheckMethod(idF.getText());
 		}
 
@@ -274,13 +272,14 @@ class MemberJoin extends JFrame implements ActionListener {
 				&& !dto.getPassword().equals("") == true && !dto.getBirth_date().equals("") == true
 				&& !dto.getEmail().equals("") == true && !dto.getGender().equals("") == true)
 			JOptionPane.showMessageDialog(this, "가입이 완료되었습니다.");
+		dispose();
 
 	}// end joinMethod()
 
 	// 취소버튼
 	public void cancelMethod() {
 
-		System.exit(0);
+		dispose();
 
 	}// end cancleMethod()
 

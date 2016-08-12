@@ -62,7 +62,7 @@ class LoginFrame extends JFrame implements ActionListener, KeyListener {
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
 		if (obj == main.memberJoinB)
-			new JoinMain();
+			new MemberJoin();
 		else if (obj == main.loginB)
 			login();
 	}// end actionPerformed()

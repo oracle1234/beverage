@@ -144,15 +144,14 @@ public class BeverageDAO {
 		try {
 			conn = init();
 			String sql = "INSERT INTO b_member(member_num,name,gender,email,birth_date,member_id,password) "
-					+ "values(?,?,?,?,?,?,?)";
+					+ "values(SEQ_b_member_member_num.nextval,?,?,?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, dto.getMember_num());
-			pstmt.setString(2, dto.getName());
-			pstmt.setString(3, dto.getGender());
-			pstmt.setString(4, dto.getEmail());
-			pstmt.setDate(5, dto.getBirth_date());
-			pstmt.setString(6, dto.getMember_id());
-			pstmt.setString(7, dto.getPassword());
+			pstmt.setString(1, dto.getName());
+			pstmt.setString(2, dto.getGender());
+			pstmt.setString(3, dto.getEmail());
+			pstmt.setDate(4, dto.getBirth_date());
+			pstmt.setString(5, dto.getMember_id());
+			pstmt.setString(6, dto.getPassword());
 			int rs = pstmt.executeUpdate();
 
 			if (rs > 0) {
