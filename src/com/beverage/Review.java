@@ -38,7 +38,7 @@ import com.beverage.dto.BeverageDTO;
 import com.beverage.dto.MemberDTO;
 import com.beverage.dto.ReviewDTO;
 
-class review extends JFrame implements ActionListener, ItemListener {
+class Review extends JFrame implements ActionListener, ItemListener {
 	JMenuBar menu;
 	JPanel jp1, jp2, jp3, sp1, sp2, p1, p2, p3;
 	JTextArea ta;
@@ -55,7 +55,7 @@ class review extends JFrame implements ActionListener, ItemListener {
 
 	BeverageDTO dto;
 
-	public review(BeverageDTO beverageDto) {
+	public Review(BeverageDTO beverageDto) {
 		this.setTitle(beverageDto.getBeverage_name());
 		ImageIcon icon = new ImageIcon("src/com/beverage/Coffee-toGo-icon.png");
 		this.setIconImage(icon.getImage());
@@ -168,6 +168,7 @@ class review extends JFrame implements ActionListener, ItemListener {
 		 */
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		// this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		this.setSize(520, 550);
