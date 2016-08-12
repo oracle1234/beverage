@@ -9,6 +9,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import com.beverage.dao.BeverageDAO;
+import com.beverage.dto.MemberDTO;
 
 class LoginFrame extends JFrame implements ActionListener, KeyListener {
 	LoginPanel main;
@@ -75,8 +76,13 @@ class LoginFrame extends JFrame implements ActionListener, KeyListener {
 			if (check == true) {
 				JOptionPane.showMessageDialog(this, "로그인 성공");
 				// 로그인 후 화면전환 메소드
-				new Design();
-				dispose();
+				if (main.idT.getText().equals("admin")) {
+					new AdminJFrame();
+					dispose();
+				} else {
+					new Design();
+					dispose();
+				}
 			} else {
 				JOptionPane.showMessageDialog(this, "아이디 또는 비밀번호를 다시 확인하세요.");
 				main.idT.setText("");

@@ -1,6 +1,6 @@
 select * from b_member;
 insert into b_member(member_num, name, gender, email, birth_date, member_id, password) 
-values(SEQ_b_member_member_num.nextval,'유재민', '남', 'dfw@nate.com', '20001212', 'qwerasd', '123456');
+values(SEQ_b_member_member_num.nextval,'a', '남', 'dfw@nate.com', '20001212', 'a', 'a');
 
 
 select * from B_CAFE;
@@ -149,33 +149,4 @@ insert into b_beverage(beverage_id, cafe_id, beverage_price, beverage_type, beve
 values(SEQ_b_beverage_beverage_id.nextval, 4, 4200, '기타', '딸기요거트', ' ');
 insert into b_beverage(beverage_id, cafe_id, beverage_price, beverage_type, beverage_name, beverage_text)
 values(SEQ_b_beverage_beverage_id.nextval, 4, 4200, '기타', '녹차요거트', ' ');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

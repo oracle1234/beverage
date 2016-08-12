@@ -38,7 +38,7 @@ public class Favor extends JFrame{
 			}
 		};
 		favor=new JTable(model);
-		//getlist();
+		getlist();
 		
 		favor.getTableHeader().setReorderingAllowed(false);
 		favor.setRowHeight(20);
@@ -54,12 +54,18 @@ public class Favor extends JFrame{
 		
 		setSize(500, 350);
 		setVisible(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
-	/*void getlist() {
-		favorList= 
+	void getlist() {
 		
-	}*/
+		favorList= dao.favorSearch();
+		for(FavorDTO dto : favorList){
+			Object[] k = { 
+					dto.getCafe_name(),dto.getBeverage_name(),
+			};
+		}
+		
+	}
 	public static void main(String[] args) {
 		new Favor();
 	}

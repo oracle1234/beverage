@@ -91,7 +91,7 @@ ALTER TABLE b_beverage
 
 ALTER TABLE b_review
 	ADD FOREIGN KEY (beverage_id)
-	REFERENCES b_beverage (beverage_id)
+	REFERENCES b_beverage (beverage_id) ON DELETE CASCADE
 ;
 
 
@@ -100,5 +100,9 @@ ALTER TABLE b_favor
 	REFERENCES b_member (member_num)
 ;
 
+ALTER TABLE b_favor
+ADD (beverage_price number(5,0))
 
+ALTER TABLE b_review
+ADD (beverage_price number(5,0))
 

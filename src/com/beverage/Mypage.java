@@ -111,7 +111,7 @@ public class Mypage extends JFrame implements ActionListener {
 
 		setSize(500, 350);
 		setVisible(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 
 	public static void main(String[] args) {

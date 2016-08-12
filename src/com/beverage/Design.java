@@ -202,7 +202,7 @@ class Design extends JFrame implements ItemListener, ActionListener, MouseListen
 		if (row < 0 || table.getValueAt(row, 0) == null)
 			return;
 		setRow(row);
-		Review r = new Review(beverageList.get(row));
+		review r = new review(beverageList.get(row));
 	}
 
 	public void setRow(int crow) {
