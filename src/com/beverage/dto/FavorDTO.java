@@ -9,6 +9,8 @@ public class FavorDTO {
 	private String cafe_name;
 	// 음료 이름
 	private String beverage_name;
+	// 음료 가격
+	private int beverage_price;
 
 	public int getMember_num() {
 		return member_num;
@@ -40,6 +42,14 @@ public class FavorDTO {
 
 	public void setBeverage_name(String beverage_name) {
 		this.beverage_name = beverage_name;
+	}
+
+	public int getBeverage_price() {
+		return beverage_price;
+	}
+
+	public void setBeverage_price(int beverage_price) {
+		this.beverage_price = beverage_price;
 	}
 
 }

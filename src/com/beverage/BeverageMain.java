@@ -1,10 +1,10 @@
 package com.beverage;
 
-public class BeverageMain {
+import javax.swing.JFrame;
+
+public class BeverageMain extends JFrame {
 
 	public static void main(String[] args) {
-		//
-	
+		new LoginFrame();
 	}
-
 }

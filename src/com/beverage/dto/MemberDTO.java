@@ -1,6 +1,8 @@
 package com.beverage.dto;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MemberDTO {
 	// 회원번호
@@ -17,6 +19,9 @@ public class MemberDTO {
 	private String member_id;
 	// 암호
 	private String password;
+	// 키값으로 카페명을 가지고오도록
+	private HashMap<Integer, String> cafe_map = new HashMap<Integer, String>();
+	private ArrayList<CafeDTO> cafeList = new ArrayList<CafeDTO>();
 
 	private static MemberDTO dto = new MemberDTO();
 
@@ -83,6 +88,22 @@ public class MemberDTO {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public HashMap<Integer, String> getCafe_map() {
+		return cafe_map;
+	}
+
+	public void setCafe_map(HashMap<Integer, String> cafe_map) {
+		this.cafe_map = cafe_map;
+	}
+
+	public ArrayList<CafeDTO> getCafeList() {
+		return cafeList;
+	}
+
+	public void setCafeList(ArrayList<CafeDTO> cafeList) {
+		this.cafeList = cafeList;
 	}
 
 }
