@@ -26,6 +26,8 @@ select * from b_cafe;
 
 select * from b_review;
 
+select * from b_favor;
+
 
 select * from b_beverage order by beverage_price;
 

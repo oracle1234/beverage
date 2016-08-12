@@ -81,7 +81,7 @@ class Review extends JFrame implements ActionListener {
 
 		sp1 = new JPanel();
 		sp2 = new JPanel();
-		score = new JLabel("평점   " + BeverageDAO.getInstance().levelMethod(dto.getBeverage_id()));
+		score = new JLabel("평점  : " + BeverageDAO.getInstance().levelMethod(dto.getBeverage_id()));
 		sp1.add(cofBtn);
 		sp2.add(score);
 
@@ -219,6 +219,9 @@ class Review extends JFrame implements ActionListener {
 
 		tf.setText("");
 		tf.requestFocus();
+
+		score.setText("평점 : " + BeverageDAO.getInstance().levelMethod(dto.getBeverage_id()));
+
 	}// actionPerformed()
 
 }
