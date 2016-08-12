@@ -76,7 +76,7 @@ class LoginFrame extends JFrame implements ActionListener, KeyListener {
 			if (check == true) {
 				JOptionPane.showMessageDialog(this, "로그인 성공");
 				// 로그인 후 화면전환 메소드
-				if (main.idT.getText().equals(MemberDTO.getInstance().getMember_id())) {
+				if (main.idT.getText().equals("admin")) {
 					new AdminJFrame();
 					dispose();
 				} else {

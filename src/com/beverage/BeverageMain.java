@@ -8,5 +8,4 @@ public class BeverageMain extends JFrame {
 		// new BeverageMain();
 		new LoginFrame();
 	}
-
 }
