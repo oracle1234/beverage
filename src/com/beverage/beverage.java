@@ -32,20 +32,23 @@ import com.beverage.dto.MemberDTO;
 
 class Design extends JFrame implements ItemListener, ActionListener, MouseListener {
 
-	JButton searchBtn, favorBtn;
+	JButton searchBtn, MypageBtn, favorBtn; 
 	JTable table;
 	JComboBox<String> locBox1, locBox2;
 	DefaultTableModel model;
 	private int crow = -1;
 
 	ArrayList<BeverageDTO> beverageList;
+	MemberDTO dto= MemberDTO.getInstance();
 
 	public Design() {
 
-		favorBtn = new JButton("즐겨찾기");
+		MypageBtn = new JButton("My Page");
 		searchBtn = new JButton("검색");
+		favorBtn= new JButton("즐겨찾기");
 		JPanel jp1 = new JPanel();
-		jp1.add(new JLabel("???님 환영합니다.      "));
+		jp1.add(new JLabel( dto.getName()  +"님 환영합니다.      "));
+		jp1.add(MypageBtn);
 		jp1.add(favorBtn);
 
 		JPanel jp2 = new JPanel();
@@ -104,10 +107,11 @@ class Design extends JFrame implements ItemListener, ActionListener, MouseListen
 		// searchBtn.addMouseListener(this);
 
 		// 즐겨찾기 버튼 연결 실행.
-		favorBtn.addActionListener(this);
+		MypageBtn.addActionListener(this);
 		table.addMouseListener(this);
+		favorBtn.addActionListener(this);
 
-		// favorBtn.addMouseListener(this);
+		// MypageBtn.addMouseListener(this);
 
 		BeverageDAO.getInstance().cafeSelect();
 
@@ -183,7 +187,10 @@ class Design extends JFrame implements ItemListener, ActionListener, MouseListen
 				Object[] k = { map.get(dto.getCafe_id()), dto.getBeverage_name(), dto.getBeverage_price() };
 				model.addRow(k);
 			}
+		} else if (obj == MypageBtn) {
+			new mypage();
 		}
+
 	}// actionPerformed()
 
 	public void move() {

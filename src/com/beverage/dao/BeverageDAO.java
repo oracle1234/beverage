@@ -171,18 +171,16 @@ public class BeverageDAO {
 	// 회원정보 수정
 	public boolean updateMember(MemberDTO updto) {
 		boolean ok = false;
+		
 		try {
 			conn = init();
-			String sql = "UPDATE b_member SET member_num =?,name=?,gender=?,email=?,birth_date=? "
-					+ "WHERE member_id=? AND password=?";
+			String sql = "UPDATE b_member SET email=?, password=? "
+					+ "WHERE member_id=? ";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, updto.getMember_num());
-			pstmt.setString(2, updto.getName());
-			pstmt.setString(3, updto.getGender());
-			pstmt.setString(4, updto.getEmail());
-			pstmt.setDate(5, updto.getBirth_date());
-			pstmt.setString(6, updto.getMember_id());
-			pstmt.setString(7, updto.getPassword());
+			pstmt.setString(1, updto.getEmail());
+			pstmt.setString(2, updto.getPassword());
+			pstmt.setString(3, updto.getMember_id());
+			
 			int rs = pstmt.executeUpdate();
 
 			if (rs > 0) {
