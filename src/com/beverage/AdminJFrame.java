@@ -1,12 +1,15 @@
 package com.beverage;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -18,10 +21,6 @@ public class AdminJFrame extends JFrame implements ActionListener, MouseListener
 	AdminJPanel admin;
 	BeverageDAO dao = BeverageDAO.getInstance();
 
-	public static void main(String[] args) {
-		new AdminJFrame();
-	}
-
 	public AdminJFrame() {
 		BeverageDAO dao = BeverageDAO.getInstance();
 		admin = new AdminJPanel();
@@ -32,9 +31,16 @@ public class AdminJFrame extends JFrame implements ActionListener, MouseListener
 		admin.table.addMouseListener(this);
 
 		setTitle("관리자 페이지");
+		ImageIcon img = new ImageIcon("src/com/beverage/Coffee-toGo-icon.png");
+		this.setIconImage(img.getImage());
 		setContentPane(admin.adminJP());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(500, 770);
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Dimension di = tk.getScreenSize();
+		Dimension di1 = this.getSize();
+		this.setLocation((int) ((di.getWidth() - this.getWidth()) / 2 - (di1.getWidth() - this.getWidth()) / 2),
+				(int) ((di.getHeight() - this.getHeight()) / 2 - (di1.getHeight() - this.getHeight()) / 2));
 		setVisible(true);
 
 	}
