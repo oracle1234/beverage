@@ -17,6 +17,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -31,7 +32,6 @@ import com.beverage.dao.BeverageDAO;
 import com.beverage.dto.MemberDTO;
 
 class MemberJoin extends JFrame implements ActionListener {
-
 	JPanel p;
 	JLabel idL, passwdL, nameL, genderL, emailL, birthL;
 	JTextField idF, nameF, emailF, birthF; // 아이디, 이름, 이메일, 생년월일
@@ -45,6 +45,8 @@ class MemberJoin extends JFrame implements ActionListener {
 	public MemberJoin() { // 가입용 생성자
 
 		this.setTitle("회원가입");
+		ImageIcon img = new ImageIcon("src/com/beverage/Coffee-toGo-icon.png");
+		this.setIconImage(img.getImage());
 
 		idL = new JLabel("아이디");
 		nameL = new JLabel("성명");

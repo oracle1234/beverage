@@ -14,7 +14,7 @@ insert into b_cafe(cafe_id, cafe_name)
 values(SEQ_b_cafe_cafe_id.nextval, '이디야');
 
 
-select * from B_BEVERAGE;
+select * from B_MEMBER;
 
  --1 스타벅스
 insert into b_beverage(beverage_id, cafe_id, beverage_price, beverage_type, beverage_name, beverage_text)
