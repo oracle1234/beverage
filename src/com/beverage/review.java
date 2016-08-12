@@ -31,6 +31,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.beverage.dao.BeverageDAO;
 import com.beverage.dto.BeverageDTO;
+import com.beverage.dto.MemberDTO;
 import com.beverage.dto.ReviewDTO;
 
 class review extends JFrame implements ActionListener, ItemListener {
@@ -39,14 +40,16 @@ class review extends JFrame implements ActionListener, ItemListener {
 	JTextArea ta;
 	JButton cofBtn, register;
 	JToolBar toolbar;
-	ImageIcon coffee;
+	ImageIcon coffee, detail2;
 	JTextField tf;
 	JLabel score, jl;
 	DefaultTableModel model;
 	JTable table;
 	JRadioButton five, four, three, two, one;
+	JOptionPane op;
 	int jumsu;
-
+	
+	
 	public review(BeverageDTO beverageDto) {
 		this.setTitle(beverageDto.getBeverage_name());
 		String path = "src/com/beverage/";
@@ -54,6 +57,19 @@ class review extends JFrame implements ActionListener, ItemListener {
 		Image img = coffee.getImage().getScaledInstance(200, 100, Image.SCALE_SMOOTH);
 		coffee = new ImageIcon(img);
 		cofBtn = new JButton(coffee);
+		
+		cofBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				BeverageDAO dao = BeverageDAO.getInstance();
+				MemberDTO mem = MemberDTO.getInstance();
+				dao.favorInsert(mem.getMember_num(), beverageDto.getBeverage_id(), 
+						mem.getCafe_map().get(beverageDto.getCafe_id()), beverageDto.getBeverage_name());
+				op.showMessageDialog(cofBtn, "즐겨찾기에 추가되었습니다.");
+				
+			}
+		});
+	
 
 		sp1 = new JPanel();
 		sp2 = new JPanel();
@@ -74,9 +90,7 @@ class review extends JFrame implements ActionListener, ItemListener {
 		Object[] obj = { "회원아이디", "리뷰평", "점수" };
 		model = new DefaultTableModel(obj, 0) {
 			@Override
-			public boolean isCellEditable(int row, int column) { // 테이블에 직접 값 입력
-																	// 못하게 하는
-																	// 메소드!
+			public boolean isCellEditable(int row, int column) { // 테이블에 직접 값 입력 X
 				return false;
 			}
 		};
@@ -131,6 +145,7 @@ class review extends JFrame implements ActionListener, ItemListener {
 		showData();
 
 		register.addActionListener(this);
+		
 		five.addItemListener(this);
 		four.addItemListener(this);
 		three.addItemListener(this);
@@ -164,7 +179,6 @@ class review extends JFrame implements ActionListener, ItemListener {
 
 	public void showData() {
 		BeverageDAO dao = BeverageDAO.getInstance();
-
 		ArrayList<ReviewDTO> dto = dao.searchMethod();
 
 		for (ReviewDTO reviewData : dto) {
@@ -176,16 +190,22 @@ class review extends JFrame implements ActionListener, ItemListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		BeverageDAO dao = BeverageDAO.getInstance();
-		int a = dao.reviewInsert(13, tf.getText(), jumsu);
-
+		
+		while (model.getRowCount() != 0) {
+			model.removeRow(0);
+		}
+		
+		int a = dao.reviewInsert(3, tf.getText(), jumsu);
+		
+		
 		if (a > 0) {
 			ArrayList<ReviewDTO> dto = dao.searchMethod();
-
 			for (ReviewDTO reviewData : dto) {
 				Object[] review = { "ddd", reviewData.getBeverage_review(), reviewData.getReview_levle() };
 				model.addRow(review);
 			}
 		}
+		
 		tf.setText("");
 		tf.requestFocus();
 
@@ -205,6 +225,9 @@ class review extends JFrame implements ActionListener, ItemListener {
 			jumsu = Integer.parseInt(two.getText());
 		else if (one.isSelected())
 			jumsu = Integer.parseInt(one.getText());
+		else{
+			jumsu=0;
+		}
 
 	}// itemStateChanged
 

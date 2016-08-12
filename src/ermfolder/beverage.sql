@@ -43,6 +43,7 @@ CREATE TABLE b_review
 );
 
 select * from b_review
+select * from b_favor
 
 CREATE TABLE b_beverage
 (

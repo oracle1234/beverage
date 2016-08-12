@@ -108,9 +108,10 @@ class Design extends JFrame implements ItemListener, ActionListener, MouseListen
 		// favorBtn.addMouseListener(this);
 
 		BeverageDAO.getInstance().cafeSelect();
-
+	
 		setSize(500, 400);
 		setVisible(true);
+		setResizable(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	}
@@ -201,6 +202,7 @@ class Design extends JFrame implements ItemListener, ActionListener, MouseListen
 public class beverage {
 
 	public static void main(String[] args) {
+	
 		new Design();
 
 	}
