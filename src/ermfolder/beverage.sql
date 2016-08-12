@@ -11,11 +11,6 @@ DROP TABLE b_member CASCADE CONSTRAINTS;
 
 /* Drop Sequences */
 
-DROP SEQUENCE SEQ_member_member_id;
-DROP SEQUENCE SEQ_beverage_beverage_id;
-DROP SEQUENCE SEQ_cafe_cafe_id;
-DROP SEQUENCE SEQ_member_member_num;
-DROP SEQUENCE SEQ_bmember_member_num;
 DROP SEQUENCE SEQ_b_member_member_num;
 DROP SEQUENCE SEQ_b_cafe_cafe_id;
 DROP SEQUENCE SEQ_b_beverage_beverage_id;
@@ -25,11 +20,6 @@ DROP SEQUENCE SEQ_b_beverage_beverage_id;
 
 /* Create Sequences */
 
-CREATE SEQUENCE SEQ_member_member_id INCREMENT BY 1 START WITH 1;
-CREATE SEQUENCE SEQ_beverage_beverage_id INCREMENT BY 1 START WITH 1;
-CREATE SEQUENCE SEQ_cafe_cafe_id INCREMENT BY 1 START WITH 1;
-CREATE SEQUENCE SEQ_member_member_num INCREMENT BY 1 START WITH 1;
-CREATE SEQUENCE SEQ_bmember_member_num INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE SEQ_b_member_member_num INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE SEQ_b_cafe_cafe_id INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE SEQ_b_beverage_beverage_id INCREMENT BY 1 START WITH 1;
