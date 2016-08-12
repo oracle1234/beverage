@@ -478,6 +478,25 @@ public class BeverageDAO {
 		return fav;
 	}
 
+	public void favorDel(int id) {
+		try {
+			conn = init();
+			String sql = "delete from b_favor where beverage_id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, id);
+			pstmt.executeUpdate();
+
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+	}
+
 	public ArrayList<BeverageDTO> allBeverageSearch() {
 		ArrayList<BeverageDTO> arr = new ArrayList<BeverageDTO>();
 
