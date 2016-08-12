@@ -8,10 +8,6 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -36,7 +32,7 @@ import com.beverage.dto.BeverageDTO;
 import com.beverage.dto.MemberDTO;
 import com.beverage.dto.ReviewDTO;
 
-class Review extends JFrame implements ActionListener, ItemListener {
+class Review extends JFrame implements ActionListener {
 	JMenuBar menu;
 	JPanel jp1, jp2, jp3, sp1, sp2, p1, p2, p3;
 	JTextArea ta;
@@ -50,34 +46,36 @@ class Review extends JFrame implements ActionListener, ItemListener {
 	JRadioButton five, four, three, two, one;
 	JOptionPane op;
 	int jumsu;
-	
-	
+
+	BeverageDTO dto;
+
 	public Review(BeverageDTO beverageDto) {
 		this.setTitle(beverageDto.getBeverage_name());
 		ImageIcon icon = new ImageIcon("src/com/beverage/Coffee-toGo-icon.png");
 		this.setIconImage(icon.getImage());
+		dto = beverageDto;
+		this.setTitle(dto.getBeverage_name());
 		String path = "src/com/beverage/";
 		coffee = new ImageIcon(path + "starbuks.JPG");
 		Image img = coffee.getImage().getScaledInstance(200, 100, Image.SCALE_SMOOTH);
 		coffee = new ImageIcon(img);
 		cofBtn = new JButton(coffee);
-		
+
 		cofBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				BeverageDAO dao = BeverageDAO.getInstance();
 				MemberDTO mem = MemberDTO.getInstance();
-				dao.favorInsert(mem.getMember_num(), beverageDto.getBeverage_id(), 
-						mem.getCafe_map().get(beverageDto.getCafe_id()), beverageDto.getBeverage_name());
+				dao.favorInsert(mem.getMember_num(), dto.getBeverage_id(), mem.getCafe_map().get(dto.getCafe_id()),
+						dto.getBeverage_name(), dto.getBeverage_price());
 				op.showMessageDialog(cofBtn, "즐겨찾기에 추가되었습니다.");
-				
+
 			}
 		});
-	
 
 		sp1 = new JPanel();
 		sp2 = new JPanel();
-		score = new JLabel("평점   " + BeverageDAO.getInstance().levelMethod());
+		score = new JLabel("평점  : " + BeverageDAO.getInstance().levelMethod(dto.getBeverage_id()));
 		sp1.add(cofBtn);
 		sp2.add(score);
 
@@ -88,13 +86,14 @@ class Review extends JFrame implements ActionListener, ItemListener {
 
 		jp2 = new JPanel();
 		ta = new JTextArea(20, 45);
-		ta.setText(beverageDto.getBeverage_text());
+		ta.setText(dto.getBeverage_text());
 		jp2.add(ta);
 
 		Object[] obj = { "회원아이디", "리뷰평", "점수" };
 		model = new DefaultTableModel(obj, 0) {
 			@Override
-			public boolean isCellEditable(int row, int column) { // 테이블에 직접 값 입력 X
+			public boolean isCellEditable(int row, int column) { // 테이블에 직접 값 입력
+																	// X
 				return false;
 			}
 		};
@@ -149,21 +148,10 @@ class Review extends JFrame implements ActionListener, ItemListener {
 		showData();
 
 		register.addActionListener(this);
-		
-		five.addItemListener(this);
-		four.addItemListener(this);
-		three.addItemListener(this);
-		two.addItemListener(this);
-		one.addItemListener(this);
+		tf.addActionListener(this);
 
-		this.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				dispose();
-			}
-		});
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.setSize(520, 550);
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		Dimension di = tk.getScreenSize();
@@ -183,41 +171,20 @@ class Review extends JFrame implements ActionListener, ItemListener {
 
 	public void showData() {
 		BeverageDAO dao = BeverageDAO.getInstance();
-		ArrayList<ReviewDTO> dto = dao.searchMethod();
+		ArrayList<ReviewDTO> dto = dao.searchMethod(this.dto.getBeverage_id());
 
 		for (ReviewDTO reviewData : dto) {
-			Object[] review = { "ddd", reviewData.getBeverage_review(), reviewData.getReview_levle() };
+			Object[] review = { reviewData.getMember_id(), reviewData.getBeverage_review(),
+					reviewData.getReview_level() };
 			model.addRow(review);
 		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		BeverageDAO dao = BeverageDAO.getInstance();
-		
-		while (model.getRowCount() != 0) {
+		while (model.getRowCount() != 0)
 			model.removeRow(0);
-		}
-		
-		int a = dao.reviewInsert(3, tf.getText(), jumsu);
-		
-		
-		if (a > 0) {
-			ArrayList<ReviewDTO> dto = dao.searchMethod();
-			for (ReviewDTO reviewData : dto) {
-				Object[] review = { "ddd", reviewData.getBeverage_review(), reviewData.getReview_levle() };
-				model.addRow(review);
-			}
-		}
-		
-		tf.setText("");
-		tf.requestFocus();
-
-	}// actionPerformed()
-
-	@Override
-	public void itemStateChanged(ItemEvent e) {
-		Object obj = e.getSource();
+		BeverageDAO dao = BeverageDAO.getInstance();
 
 		if (five.isSelected())
 			jumsu = Integer.parseInt(five.getText());
@@ -229,10 +196,26 @@ class Review extends JFrame implements ActionListener, ItemListener {
 			jumsu = Integer.parseInt(two.getText());
 		else if (one.isSelected())
 			jumsu = Integer.parseInt(one.getText());
-		else{
-			jumsu=0;
+		else {
+			jumsu = 0;
 		}
 
-	}// itemStateChanged
+		int a = dao.reviewInsert(dto.getBeverage_id(), MemberDTO.getInstance().getMember_id(), tf.getText(), jumsu);
+
+		if (a > 0) {
+			ArrayList<ReviewDTO> dto = dao.searchMethod(this.dto.getBeverage_id());
+			for (ReviewDTO reviewData : dto) {
+				Object[] review = { reviewData.getMember_id(), reviewData.getBeverage_review(),
+						reviewData.getReview_level() };
+				model.addRow(review);
+			}
+		}
+
+		tf.setText("");
+		tf.requestFocus();
+
+		score.setText("평점 : " + BeverageDAO.getInstance().levelMethod(dto.getBeverage_id()));
+
+	}// actionPerformed()
 
 }

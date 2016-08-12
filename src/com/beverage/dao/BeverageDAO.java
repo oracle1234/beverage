@@ -135,7 +135,6 @@ public class BeverageDAO {
 		}
 	}// end cafeBeverageInsert()
 
-
 	// 음료 삭제하기 - 리뷰까지 전부 삭제
 	public void cafeBeverageDelete(int beverage_id) {
 
@@ -294,8 +293,6 @@ public class BeverageDAO {
 		return check;
 	}// end idCheck()
 
-
-
 	// 음료 검색하기
 	public int reviewInsert(int beverage_id, String member_id, String beverage_review, int review_level) {
 
@@ -323,18 +320,20 @@ public class BeverageDAO {
 
 	}// end insertMethod
 
-	public void favorInsert(int member_num, int beverage_id, String cafe_name, String beverage_name) {
+	public void favorInsert(int member_num, int beverage_id, String cafe_name, String beverage_name,
+			int beverage_price) {
 
 		try {
 			conn = init();
 
-			String sql = "insert into b_favor(member_num, beverage_id, cafe_name, beverage_name) values(?,?,?,?)";
+			String sql = "insert into b_favor values(?,?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setInt(1, member_num);
 			pstmt.setInt(2, beverage_id);
 			pstmt.setString(3, cafe_name);
 			pstmt.setString(4, beverage_name);
+			pstmt.setInt(5, beverage_price);
 
 			pstmt.executeQuery();
 
@@ -346,9 +345,6 @@ public class BeverageDAO {
 		}
 
 	}// end insertMethod
-
-
-
 
 	public ArrayList<ReviewDTO> searchMethod(int id) {
 
@@ -382,14 +378,15 @@ public class BeverageDAO {
 
 	}// searchMethod
 
-	public double levelMethod() {
+	public double levelMethod(int b_id) {
 		double avg = 0;
 
 		ArrayList<ReviewDTO> aList = new ArrayList<ReviewDTO>();
 		try {
 			conn = init();
-			String sql = "select avg(review_level) from b_review group by beverage_id";
+			String sql = "select avg(review_level) from b_review where beverage_id = ? group by beverage_id";
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, b_id);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -449,36 +446,37 @@ public class BeverageDAO {
 		return arr;
 	}
 
-
-	public ArrayList<FavorDTO> favorSearch(){
+	public ArrayList<FavorDTO> favorSearch() {
 		ArrayList<FavorDTO> fav = new ArrayList<FavorDTO>();
-		
-		
+
 		try {
-			conn=init();
-			String sql="select * from b_favor "
-					+ "where beverage_id=?";
+			conn = init();
+			String sql = "select * from b_favor where member_num=?";
 			pstmt = conn.prepareStatement(sql);
-//		pstmt.setArray(1, fav.get);
-			
-			
-			pstmt.executeQuery();
-			
+			pstmt.setInt(1, MemberDTO.getInstance().getMember_num());
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				FavorDTO dto = new FavorDTO();
+				dto.setBeverage_id(rs.getInt("beverage_id"));
+				dto.setCafe_name(rs.getString("cafe_name"));
+				dto.setBeverage_name(rs.getString("beverage_name"));
+				dto.setBeverage_price(rs.getInt("beverage_price"));
+				fav.add(dto);
+			}
+
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally{
+		} finally {
 			stop();
 		}
-		
-		
-		
+
 		return fav;
 	}
-	
 
 	public ArrayList<BeverageDTO> allBeverageSearch() {
 		ArrayList<BeverageDTO> arr = new ArrayList<BeverageDTO>();
