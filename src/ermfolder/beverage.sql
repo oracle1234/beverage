@@ -8,7 +8,6 @@ DROP TABLE b_favor CASCADE CONSTRAINTS;
 DROP TABLE b_member CASCADE CONSTRAINTS;
 
 
-
 /* Drop Sequences */
 
 DROP SEQUENCE SEQ_b_member_member_num;

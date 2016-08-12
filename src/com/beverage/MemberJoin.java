@@ -31,7 +31,6 @@ import com.beverage.dao.BeverageDAO;
 import com.beverage.dto.MemberDTO;
 
 class MemberJoin extends JFrame implements ActionListener {
-
 	JPanel p;
 	JLabel idL, passwdL, nameL, genderL, emailL, birthL;
 	JTextField idF, nameF, emailF, birthF; // 아이디, 이름, 이메일, 생년월일

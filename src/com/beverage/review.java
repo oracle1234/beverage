@@ -1,9 +1,11 @@
 package com.beverage;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -140,17 +142,17 @@ class review extends JFrame implements ActionListener, ItemListener {
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				int msg = getConfirmMessage("창을 닫으시겠습니까?");
-				if (msg == 0)
-					dispose();
-				else
-					return;
+				dispose();
 			}
 		});
 
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
 		this.setSize(520, 550);
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Dimension di = tk.getScreenSize();
+		Dimension di1 = this.getSize();
+		this.setLocation((int) ((di.getWidth() - this.getWidth()) / 2 - (di1.getWidth() - this.getWidth()) / 2),
+				(int) ((di.getHeight() - this.getHeight()) / 2 - (di1.getHeight() - this.getHeight()) / 2));
 		this.setVisible(true);
 
 	}

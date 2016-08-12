@@ -9,16 +9,12 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -192,7 +188,6 @@ class Design extends JFrame implements ItemListener, ActionListener, MouseListen
 			return;
 		setRow(row);
 		review r = new review(beverageList.get(row));
-
 	}
 
 	public void setRow(int crow) {
@@ -204,12 +199,3 @@ class Design extends JFrame implements ItemListener, ActionListener, MouseListen
 	}
 
 }// end class
-
-public class beverage {
-
-	public static void main(String[] args) {
-		new Design();
-
-	}
-
-}
