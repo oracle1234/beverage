@@ -1,8 +1,6 @@
 package com.beverage;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -54,16 +52,19 @@ public class AdminJFrame extends JFrame implements ActionListener, MouseListener
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
 		if (obj == admin.cafeInBtn) {
-			if (dao.cafeInsert(admin.cafeName.getText()) > 0) {
-				JOptionPane.showMessageDialog(admin, "성공");
-				admin.cafeName.setText("");
-				refresh();
+			if (admin.cafeName.getText().length() > 0) {
+				if (dao.cafeInsert(admin.cafeName.getText()) > 0) {
+					JOptionPane.showMessageDialog(admin, "카페 등록 성공");
+					admin.cafeName.setText("");
+					refresh();
+				}
 			} else {
-
+				JOptionPane.showMessageDialog(admin, "등록할 카페를 입력하세요.");
 			}
+
 		} else if (obj == admin.cafeDelBtn) {
 			dao.cafeDelete((String) admin.cafeBox.getSelectedItem());
-			JOptionPane.showMessageDialog(admin, "삭제 성공");
+			JOptionPane.showMessageDialog(admin, "카페 삭제 성공");
 			refresh();
 		} else if (obj == admin.b_Insert) {
 			BeverageDTO dto = new BeverageDTO();
@@ -74,7 +75,7 @@ public class AdminJFrame extends JFrame implements ActionListener, MouseListener
 			dto.setBeverage_text(admin.jfText.getText());
 			dao.cafeBeverageInsert(dto);
 
-			JOptionPane.showMessageDialog(admin, "등록 성공");
+			JOptionPane.showMessageDialog(admin, "음료 등록 성공");
 			admin.getList();
 			refresh();
 		}
