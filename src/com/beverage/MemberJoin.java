@@ -32,15 +32,17 @@ import com.beverage.dto.MemberDTO;
 
 class MemberJoin extends JFrame implements ActionListener {
 
+	
+	BeverageDAO dao = BeverageDAO.getInstance();
+	MemberDTO dto = MemberDTO.getInstance();
+	
 	JPanel p;
 	JLabel idL, passwdL, nameL, genderL, emailL, birthL;
 	JTextField idF, nameF, emailF, birthF; // 아이디, 이름, 이메일, 생년월일
 	JPasswordField passwdF; // 비밀번호
 	JRadioButton manR, womanR; // 성별
 	JButton btnRegister, btnCancel, btnCheck; // 가입, 취소
-
-	BeverageDAO dao = BeverageDAO.getInstance();
-	MemberDTO dto = MemberDTO.getInstance();
+	int cnt = 0;
 
 	public MemberJoin() { // 가입용 생성자
 
@@ -149,10 +151,10 @@ class MemberJoin extends JFrame implements ActionListener {
 				(int) ((di.getHeight() - this.getHeight()) / 2 - (di1.getHeight() - this.getHeight()) / 2));
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-	}
+	}//end memberJoin;
 
 	public int getConfirmMessage(String msg) {
-		JLabel label = new JLabel(msg);
+		JLabel label = new JLabel(msg); 
 		label.setFont(new Font("sanSerif", 0, 12));
 		label.setForeground(new Color(255, 0, 0)); // Color.red
 		return JOptionPane.showConfirmDialog(this, label, "메세지", JOptionPane.YES_NO_OPTION);
@@ -171,6 +173,7 @@ class MemberJoin extends JFrame implements ActionListener {
 		}
 
 	}// end actionPerformed()
+	
 
 	public void joinMethod() {
 
@@ -208,6 +211,13 @@ class MemberJoin extends JFrame implements ActionListener {
 			JOptionPane.showMessageDialog(this, "이메일을 입력하세요.");
 			return;
 		}
+		
+		//중복체크시에만 가입허용
+		if(cnt == 0){
+			JOptionPane.showMessageDialog(this, "아이디 중복체크를 하세요.");
+			return;
+		}
+	
 
 		// 글자수 제한
 		if (idF.getText().length() >= 12) {
@@ -228,8 +238,12 @@ class MemberJoin extends JFrame implements ActionListener {
 			return;
 		}
 
-		if (idF.getText().length() <= 12 && !idF.getText().equals("")) {
+		
+		//모든 조건 충족시 변수에 대입
+		if (idF.getText().length() <= 12 && !idF.getText().equals("") && cnt == 1) {
 			id = idF.getText();
+		}else {
+			JOptionPane.showMessageDialog(this, "");
 		}
 		if (passwdF.getText().length() <= 12 && !idF.getText().equals("")) {
 			passwd = passwdF.getText();
@@ -272,6 +286,9 @@ class MemberJoin extends JFrame implements ActionListener {
 				&& !dto.getPassword().equals("") == true && !dto.getBirth_date().equals("") == true
 				&& !dto.getEmail().equals("") == true && !dto.getGender().equals("") == true)
 			JOptionPane.showMessageDialog(this, "가입이 완료되었습니다.");
+		else if(cnt == 0){
+			JOptionPane.showMessageDialog(this, "아이디 중복체크를 해주세요.");
+		}
 		dispose();
 
 	}// end joinMethod()
@@ -284,11 +301,13 @@ class MemberJoin extends JFrame implements ActionListener {
 	}// end cancleMethod()
 
 	private void idCheckMethod(String id) {
-
+		
+		
 		boolean check = false;
 
 		check = dao.idCheck(id);
-
+		
+		
 		if (check == true) {
 			JOptionPane.showMessageDialog(this, "중복된 아이디입니다.");
 		} else if (!idF.getText().equals("") && check == false && idF.getText().length() <= 12) {
@@ -298,6 +317,15 @@ class MemberJoin extends JFrame implements ActionListener {
 		} else if (idF.getText().length() > 12) {
 			JOptionPane.showMessageDialog(this, "아이디는 영문, 숫자혼합 12자리까지 허용합니다");
 		}
+		
+		if(!idF.getText().equals("")){
+			cnt = 1;
+			return;
+		} else {
+			cnt = 0;
+		}
+		
+		
 
 	}// end idCheckMethod()
 
