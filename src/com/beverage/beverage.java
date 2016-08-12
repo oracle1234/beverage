@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -37,6 +38,10 @@ class Design extends JFrame implements ItemListener, ActionListener, MouseListen
 	ArrayList<BeverageDTO> beverageList;
 
 	public Design() {
+
+		this.setTitle("I Will Choose a Drink for You!");
+		ImageIcon img = new ImageIcon("src/com/beverage/Coffee-toGo-icon.png");
+		this.setIconImage(img.getImage());
 
 		favorBtn = new JButton("즐겨찾기");
 		searchBtn = new JButton("검색");

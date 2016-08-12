@@ -51,6 +51,8 @@ class review extends JFrame implements ActionListener, ItemListener {
 
 	public review(BeverageDTO beverageDto) {
 		this.setTitle(beverageDto.getBeverage_name());
+		ImageIcon icon = new ImageIcon("src/com/beverage/Coffee-toGo-icon.png");
+		this.setIconImage(icon.getImage());
 		String path = "src/com/beverage/";
 		coffee = new ImageIcon(path + "starbuks.JPG");
 		Image img = coffee.getImage().getScaledInstance(200, 100, Image.SCALE_SMOOTH);
