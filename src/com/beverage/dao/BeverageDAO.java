@@ -394,16 +394,18 @@ public class BeverageDAO {
 		return arr;
 	}
 
-	public ArrayList<FavorDTO> favorSearch(String name, String type, int price){
+	public ArrayList<FavorDTO> favorSearch(FavorDTO ft){
 		ArrayList<FavorDTO> fav = new ArrayList<FavorDTO>();
 		
 		try {
 			conn=init();
 			String sql="select * from b_favor "
-					+ "where beverage_id=?, cafe_name=?, beverage_name=?";
+					+ "where member_num=?";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, name);
+		
 			
+			
+			pstmt.executeQuery();
 			
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -411,6 +413,8 @@ public class BeverageDAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally{
+			stop();
 		}
 		
 		

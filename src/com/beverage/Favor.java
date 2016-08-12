@@ -16,7 +16,7 @@ import com.beverage.dto.BeverageDTO;
 import com.beverage.dto.FavorDTO;
 import com.beverage.dto.MemberDTO;
 
-public class favor extends JFrame{
+public class Favor extends JFrame{
 	MemberDTO dto= MemberDTO.getInstance();
 	ArrayList<FavorDTO> favorList;
 	BeverageDAO dao = BeverageDAO.getInstance();
@@ -28,7 +28,7 @@ public class favor extends JFrame{
 	JButton delete;
 	
 	
-	favor(){
+	Favor(){
 		JPanel jp1= new JPanel();
 		Object[] obj={ "카페이름", "음료명", "커피가격"};
 		model = new DefaultTableModel(obj, 0) {
@@ -38,7 +38,7 @@ public class favor extends JFrame{
 			}
 		};
 		favor=new JTable(model);
-		getlist();
+		//getlist();
 		
 		favor.getTableHeader().setReorderingAllowed(false);
 		favor.setRowHeight(20);
@@ -56,12 +56,12 @@ public class favor extends JFrame{
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-	void getlist() {
+	/*void getlist() {
 		favorList= 
 		
-	}
+	}*/
 	public static void main(String[] args) {
-		new favor();
+		new Favor();
 	}
 	
 	

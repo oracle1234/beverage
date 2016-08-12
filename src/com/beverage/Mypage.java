@@ -22,7 +22,7 @@ import javax.swing.border.TitledBorder;
 import com.beverage.dao.BeverageDAO;
 import com.beverage.dto.MemberDTO;
 
-public class mypage extends JFrame implements ActionListener {
+public class Mypage extends JFrame implements ActionListener {
 	MemberDTO dao = MemberDTO.getInstance();
 	BeverageDAO dto= BeverageDAO.getInstance();
 	JLabel idL, passwdL, nameL, genderL, emailL, birthL, idF, nameF, birthF;
@@ -32,7 +32,7 @@ public class mypage extends JFrame implements ActionListener {
 	JButton change;
 	JPanel p;
 
-	public mypage() {
+	public Mypage() {
 
 		///////////////// 개인정보 수정/////////////////
 		idL = new JLabel("아이디");
@@ -115,7 +115,7 @@ public class mypage extends JFrame implements ActionListener {
 	}
 
 	public static void main(String[] args) {
-		new mypage();
+		new Mypage();
 	}
 
 	@Override

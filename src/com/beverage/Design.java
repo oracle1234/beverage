@@ -190,9 +190,9 @@ class Design extends JFrame implements ItemListener, ActionListener, MouseListen
 				model.addRow(k);
 			}
 		} else if (obj == MypageBtn) {
-			new mypage();
+			new Mypage();
 		} else if (obj== favorBtn){
-			new favor();
+			new Favor();
 		}
 
 	}// actionPerformed()
@@ -202,7 +202,7 @@ class Design extends JFrame implements ItemListener, ActionListener, MouseListen
 		if (row < 0 || table.getValueAt(row, 0) == null)
 			return;
 		setRow(row);
-		review r = new review(beverageList.get(row));
+		Review r = new Review(beverageList.get(row));
 	}
 
 	public void setRow(int crow) {
@@ -218,13 +218,4 @@ class Design extends JFrame implements ItemListener, ActionListener, MouseListen
 
 // end class
 
-public class beverage {
-
-	public static void main(String[] args) {
-	
-		new Design();
-
-	}
-
-}
 
