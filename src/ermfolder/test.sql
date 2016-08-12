@@ -1,3 +1,9 @@
+ALTER TABLE b_review
+	ADD FOREIGN KEY (beverage_id)
+	REFERENCES b_beverage (beverage_id) ON DELETE CASCADE
+;
+
+
 select cafe_id, cafe_name, count(*) as "count"
 from b_cafe 
 where cafe_id = 5

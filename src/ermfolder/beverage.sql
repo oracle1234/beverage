@@ -1,5 +1,3 @@
-select * from b_review;
-select * from B_FAVOR
 
 /* Drop Tables */
 
@@ -10,15 +8,28 @@ DROP TABLE b_favor CASCADE CONSTRAINTS;
 DROP TABLE b_member CASCADE CONSTRAINTS;
 
 
+
 /* Drop Sequences */
 
+DROP SEQUENCE SEQ_member_member_id;
+DROP SEQUENCE SEQ_beverage_beverage_id;
+DROP SEQUENCE SEQ_cafe_cafe_id;
+DROP SEQUENCE SEQ_member_member_num;
+DROP SEQUENCE SEQ_bmember_member_num;
 DROP SEQUENCE SEQ_b_member_member_num;
 DROP SEQUENCE SEQ_b_cafe_cafe_id;
 DROP SEQUENCE SEQ_b_beverage_beverage_id;
 
 
+
+
 /* Create Sequences */
 
+CREATE SEQUENCE SEQ_member_member_id INCREMENT BY 1 START WITH 1;
+CREATE SEQUENCE SEQ_beverage_beverage_id INCREMENT BY 1 START WITH 1;
+CREATE SEQUENCE SEQ_cafe_cafe_id INCREMENT BY 1 START WITH 1;
+CREATE SEQUENCE SEQ_member_member_num INCREMENT BY 1 START WITH 1;
+CREATE SEQUENCE SEQ_bmember_member_num INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE SEQ_b_member_member_num INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE SEQ_b_cafe_cafe_id INCREMENT BY 1 START WITH 1;
 CREATE SEQUENCE SEQ_b_beverage_beverage_id INCREMENT BY 1 START WITH 1;
@@ -34,17 +45,6 @@ CREATE TABLE b_cafe
 	PRIMARY KEY (cafe_id)
 );
 
-
-CREATE TABLE b_review
-(
-	beverage_id number NOT NULL,
-	review_level number NOT NULL,
-	beverage_review varchar2(100),
-	member_id varchar2(30)
-);
-
-select * from b_review
-select * from b_favor
 
 CREATE TABLE b_beverage
 (
@@ -76,7 +76,18 @@ CREATE TABLE b_favor
 	member_num number NOT NULL,
 	beverage_id number,
 	cafe_name varchar2(30),
-	beverage_name varchar2(30)
+	beverage_name varchar2(30),
+	beverage_price number(5,0)
+);
+
+
+CREATE TABLE b_review
+(
+	beverage_id number NOT NULL,
+	review_level number NOT NULL,
+	beverage_review varchar2(100),
+	member_id varchar2(30),
+	beverage_price number(5,0)
 );
 
 
@@ -100,9 +111,5 @@ ALTER TABLE b_favor
 	REFERENCES b_member (member_num)
 ;
 
-ALTER TABLE b_favor
-ADD (beverage_price number(5,0))
 
-ALTER TABLE b_review
-ADD (beverage_price number(5,0))
 
