@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.beverage.dto.BeverageDTO;
+import com.beverage.dto.CafeDTO;
 import com.beverage.dto.ReviewDTO;
 import com.beverage.dto.MemberDTO;
 
@@ -49,12 +50,31 @@ public class BeverageDAO {
 	}// end stop()
 
 	// 카페 정보 등록
-	public void cafeInsert(String cafe_name) {
+	public int cafeInsert(String cafe_name) {
+		int count = 0;
 		try {
 			conn = init();
 			String sql = "insert into b_cafe(cafe_id, cafe_name) values(SEQ_b_cafe_cafe_id.nextval, ?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, cafe_name);
+			count = pstmt.executeUpdate();
+
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+		return count;
+	}// end cafeInsert()
+
+	// 카페 정보 삭제
+	public void cafeDelete(String cafe) {
+
+		try {
+			conn = init();
+			String sql = "delete from b_cafe where cafe_name = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, cafe);
 			pstmt.executeUpdate();
 
 		} catch (ClassNotFoundException | SQLException e) {
@@ -62,10 +82,12 @@ public class BeverageDAO {
 		} finally {
 			stop();
 		}
-	}// end cafeInsert()
+	}
 
 	// 등록된 카페 정보 가지고 오기
 	public void cafeSelect() {
+		ArrayList<CafeDTO> aList = new ArrayList<CafeDTO>();
+		MemberDTO.getInstance().getCafeList().removeAll(MemberDTO.getInstance().getCafeList());
 		try {
 			conn = init();
 			String sql = "select * from b_cafe";
@@ -73,6 +95,10 @@ public class BeverageDAO {
 			rs = stmt.executeQuery(sql);
 
 			while (rs.next()) {
+				CafeDTO dto = new CafeDTO();
+				dto.setCafe_id(rs.getInt("cafe_id"));
+				dto.setCafe_name(rs.getString("cafe_name"));
+				MemberDTO.getInstance().getCafeList().add(dto);
 				MemberDTO.getInstance().getCafe_map().put(rs.getInt("cafe_id"), rs.getString("cafe_name"));
 			}
 
@@ -84,14 +110,14 @@ public class BeverageDAO {
 	}// end
 
 	// 카페에 음료 추가하기
-	public void cafeBeverageInsert(int cafe_id, BeverageDTO dto) {
+	public void cafeBeverageInsert(BeverageDTO dto) {
 
 		try {
 			conn = init();
 			String sql = "insert into b_beverage(beverage_id, cafe_id, beverage_price, beverage_type, beverage_name, beverage_text)"
 					+ " values(SEQ_b_beverage_beverage_id.nextval, ?, ?, ?, ?, ?)";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, cafe_id);
+			pstmt.setInt(1, dto.getCafe_id());
 			pstmt.setInt(2, dto.getBeverage_price());
 			pstmt.setString(3, dto.getBeverage_type());
 			pstmt.setString(4, dto.getBeverage_name());
@@ -104,6 +130,23 @@ public class BeverageDAO {
 			stop();
 		}
 	}// end cafeBeverageInsert()
+
+	// 음료 삭제하기 - 리뷰까지 전부 삭제
+	public void cafeBeverageDelete(int beverage_id) {
+
+		try {
+			conn = init();
+			String sql = "delete from b_beverage where beverage_id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, beverage_id);
+			pstmt.executeUpdate();
+
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+	}
 
 	// 로그인 & 정보 불러오기
 	public boolean getMember(String id, String password) {
@@ -351,6 +394,37 @@ public class BeverageDAO {
 			}
 
 			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				BeverageDTO dto = new BeverageDTO();
+				dto.setBeverage_id(rs.getInt("beverage_id"));
+				dto.setCafe_id(rs.getInt("cafe_id"));
+				dto.setBeverage_price(rs.getInt("beverage_price"));
+				dto.setBeverage_type(rs.getString("beverage_type"));
+				dto.setBeverage_name(rs.getString("beverage_name"));
+				dto.setBeverage_text(rs.getString("beverage_text"));
+				arr.add(dto);
+			}
+
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+
+		return arr;
+	}
+
+	public ArrayList<BeverageDTO> allBeverageSearch() {
+		ArrayList<BeverageDTO> arr = new ArrayList<BeverageDTO>();
+
+		try {
+			conn = init();
+
+			String sql = "select * from b_beverage order by beverage_price";
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
 
 			while (rs.next()) {
 				BeverageDTO dto = new BeverageDTO();
