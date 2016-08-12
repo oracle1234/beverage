@@ -35,6 +35,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.beverage.dao.BeverageDAO;
 import com.beverage.dto.BeverageDTO;
+import com.beverage.dto.MemberDTO;
 import com.beverage.dto.ReviewDTO;
 
 class review extends JFrame implements ActionListener, ItemListener {
@@ -43,23 +44,40 @@ class review extends JFrame implements ActionListener, ItemListener {
 	JTextArea ta;
 	JButton cofBtn, register;
 	JToolBar toolbar;
-	ImageIcon coffee;
+	ImageIcon coffee, detail2;
 	JTextField tf;
 	JLabel score, jl;
 	DefaultTableModel model;
 	JTable table;
 	JRadioButton five, four, three, two, one;
+	JOptionPane op;
 	int jumsu;
+
+	BeverageDTO dto;
 
 	public review(BeverageDTO beverageDto) {
 		this.setTitle(beverageDto.getBeverage_name());
 		ImageIcon icon = new ImageIcon("src/com/beverage/Coffee-toGo-icon.png");
 		this.setIconImage(icon.getImage());
+		dto = beverageDto;
+		this.setTitle(dto.getBeverage_name());
 		String path = "src/com/beverage/";
 		coffee = new ImageIcon(path + "starbuks.JPG");
 		Image img = coffee.getImage().getScaledInstance(200, 100, Image.SCALE_SMOOTH);
 		coffee = new ImageIcon(img);
 		cofBtn = new JButton(coffee);
+
+		cofBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				BeverageDAO dao = BeverageDAO.getInstance();
+				MemberDTO mem = MemberDTO.getInstance();
+				dao.favorInsert(mem.getMember_num(), dto.getBeverage_id(), mem.getCafe_map().get(dto.getCafe_id()),
+						dto.getBeverage_name());
+				op.showMessageDialog(cofBtn, "즐겨찾기에 추가되었습니다.");
+
+			}
+		});
 
 		sp1 = new JPanel();
 		sp2 = new JPanel();
@@ -74,15 +92,14 @@ class review extends JFrame implements ActionListener, ItemListener {
 
 		jp2 = new JPanel();
 		ta = new JTextArea(20, 45);
-		ta.setText(beverageDto.getBeverage_text());
+		ta.setText(dto.getBeverage_text());
 		jp2.add(ta);
 
 		Object[] obj = { "회원아이디", "리뷰평", "점수" };
 		model = new DefaultTableModel(obj, 0) {
 			@Override
 			public boolean isCellEditable(int row, int column) { // 테이블에 직접 값 입력
-																	// 못하게 하는
-																	// 메소드!
+																	// X
 				return false;
 			}
 		};
@@ -144,14 +161,15 @@ class review extends JFrame implements ActionListener, ItemListener {
 		two.addItemListener(this);
 		one.addItemListener(this);
 
-		this.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				dispose();
-			}
-		});
+		/*
+		 * this.addWindowListener(new WindowAdapter() {
+		 * 
+		 * @Override public void windowClosing(WindowEvent e) { dispose(); } });
+		 */
 
-		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
 		this.setSize(520, 550);
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		Dimension di = tk.getScreenSize();
@@ -171,11 +189,11 @@ class review extends JFrame implements ActionListener, ItemListener {
 
 	public void showData() {
 		BeverageDAO dao = BeverageDAO.getInstance();
-
-		ArrayList<ReviewDTO> dto = dao.searchMethod();
+		ArrayList<ReviewDTO> dto = dao.searchMethod(this.dto.getBeverage_id());
 
 		for (ReviewDTO reviewData : dto) {
-			Object[] review = { "ddd", reviewData.getBeverage_review(), reviewData.getReview_levle() };
+			Object[] review = { reviewData.getMember_id(), reviewData.getBeverage_review(),
+					reviewData.getReview_level() };
 			model.addRow(review);
 		}
 	}
@@ -185,16 +203,22 @@ class review extends JFrame implements ActionListener, ItemListener {
 		while (model.getRowCount() != 0)
 			model.removeRow(0);
 		BeverageDAO dao = BeverageDAO.getInstance();
-		int a = dao.reviewInsert(13, tf.getText(), jumsu);
+
+		while (model.getRowCount() != 0) {
+			model.removeRow(0);
+		}
+
+		int a = dao.reviewInsert(dto.getBeverage_id(), MemberDTO.getInstance().getMember_id(), tf.getText(), jumsu);
 
 		if (a > 0) {
-			ArrayList<ReviewDTO> dto = dao.searchMethod();
-
+			ArrayList<ReviewDTO> dto = dao.searchMethod(this.dto.getBeverage_id());
 			for (ReviewDTO reviewData : dto) {
-				Object[] review = { "ddd", reviewData.getBeverage_review(), reviewData.getReview_levle() };
+				Object[] review = { reviewData.getMember_id(), reviewData.getBeverage_review(),
+						reviewData.getReview_level() };
 				model.addRow(review);
 			}
 		}
+
 		tf.setText("");
 		tf.requestFocus();
 	}// actionPerformed()
@@ -213,6 +237,9 @@ class review extends JFrame implements ActionListener, ItemListener {
 			jumsu = Integer.parseInt(two.getText());
 		else if (one.isSelected())
 			jumsu = Integer.parseInt(one.getText());
+		else {
+			jumsu = 0;
+		}
 
 	}// itemStateChanged
 }

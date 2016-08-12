@@ -215,18 +215,15 @@ public class BeverageDAO {
 	// 회원정보 수정
 	public boolean updateMember(MemberDTO updto) {
 		boolean ok = false;
+
 		try {
 			conn = init();
-			String sql = "UPDATE b_member SET member_num =?,name=?,gender=?,email=?,birth_date=? "
-					+ "WHERE member_id=? AND password=?";
+			String sql = "UPDATE b_member SET email=?, password=? " + "WHERE member_id=? ";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, updto.getMember_num());
-			pstmt.setString(2, updto.getName());
-			pstmt.setString(3, updto.getGender());
-			pstmt.setString(4, updto.getEmail());
-			pstmt.setDate(5, updto.getBirth_date());
-			pstmt.setString(6, updto.getMember_id());
-			pstmt.setString(7, updto.getPassword());
+			pstmt.setString(1, updto.getEmail());
+			pstmt.setString(2, updto.getPassword());
+			pstmt.setString(3, updto.getMember_id());
+
 			int rs = pstmt.executeUpdate();
 
 			if (rs > 0) {
@@ -293,7 +290,7 @@ public class BeverageDAO {
 	}// end idCheck()
 
 	// 음료 검색하기
-	public int reviewInsert(int id, String review, int num) {
+	public int reviewInsert(int beverage_id, String member_id, String beverage_review, int review_level) {
 		int cnt = 0;
 		try {
 			conn = init();
@@ -301,10 +298,10 @@ public class BeverageDAO {
 			String sql = "insert into b_review(beverage_id, member_id, beverage_review, review_level) values(?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setInt(1, id);
-			pstmt.setString(2, "eeee");
-			pstmt.setString(3, review);
-			pstmt.setInt(4, num);
+			pstmt.setInt(1, beverage_id);
+			pstmt.setString(2, member_id);
+			pstmt.setString(3, beverage_review);
+			pstmt.setInt(4, review_level);
 
 			cnt = pstmt.executeUpdate();
 
@@ -318,21 +315,46 @@ public class BeverageDAO {
 
 	}// end insertMethod
 
-	public ArrayList<ReviewDTO> searchMethod() {
+	public void favorInsert(int member_num, int beverage_id, String cafe_name, String beverage_name) {
+
+		try {
+			conn = init();
+
+			String sql = "insert into b_favor(member_num, beverage_id, cafe_name, beverage_name) values(?,?,?,?)";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, member_num);
+			pstmt.setInt(2, beverage_id);
+			pstmt.setString(3, cafe_name);
+			pstmt.setString(4, beverage_name);
+
+			pstmt.executeQuery();
+
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+
+	}// end insertMethod
+
+	public ArrayList<ReviewDTO> searchMethod(int id) {
 		ArrayList<ReviewDTO> aList = new ArrayList<ReviewDTO>();
 
 		try {
 			conn = init();
 
-			String sql = "select member_id, beverage_review , review_level from b_review";
+			String sql = "select member_id, beverage_review , review_level from b_review where beverage_id=?";
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, id);
 
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
 				ReviewDTO dto = new ReviewDTO();
 				dto.setMember_id(rs.getString("member_id"));
-				dto.setReview_levle(rs.getInt("review_level"));
+				dto.setReview_level(rs.getInt("review_level"));
 				dto.setBeverage_review(rs.getString("beverage_review"));
 				aList.add(dto);
 			}

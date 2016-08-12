@@ -150,5 +150,3 @@ values(SEQ_b_beverage_beverage_id.nextval, 4, 4200, '기타', '딸기요거트',
 insert into b_beverage(beverage_id, cafe_id, beverage_price, beverage_type, beverage_name, beverage_text)
 values(SEQ_b_beverage_beverage_id.nextval, 4, 4200, '기타', '녹차요거트', ' ');
 
-
-
