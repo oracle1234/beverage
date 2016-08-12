@@ -1,6 +1,8 @@
 package com.beverage;
 
+import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -110,6 +112,11 @@ class Design extends JFrame implements ItemListener, ActionListener, MouseListen
 		BeverageDAO.getInstance().cafeSelect();
 
 		setSize(500, 400);
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Dimension di = tk.getScreenSize();
+		Dimension di1 = this.getSize();
+		this.setLocation((int) ((di.getWidth() - this.getWidth()) / 2 - (di1.getWidth() - this.getWidth()) / 2),
+				(int) ((di.getHeight() - this.getHeight()) / 2 - (di1.getHeight() - this.getHeight()) / 2));
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

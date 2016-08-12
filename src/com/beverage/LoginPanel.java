@@ -10,7 +10,8 @@ import javax.swing.border.*;
 
 public class LoginPanel extends JPanel {
 	JLabel id, password, imgl;
-	JTextField idT, passwordT;
+	JTextField idT;
+	JPasswordField passwordT;
 	JButton memberJoinB, loginB;
 	JPanel labelP, idText, passwordText, top, north, buttonP, up, center, imgP;
 	EtchedBorder etch;
@@ -25,7 +26,7 @@ public class LoginPanel extends JPanel {
 		password.setFont(font);
 
 		idT = new JTextField(17);
-		passwordT = new JTextField(17);
+		passwordT = new JPasswordField(17);
 
 		memberJoinB = new JButton("회원가입");
 		memberJoinB.setFont(font);
