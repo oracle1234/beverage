@@ -115,7 +115,7 @@ class Design extends JFrame implements ItemListener, ActionListener, MouseListen
 		// MypageBtn.addMouseListener(this);
 
 		BeverageDAO.getInstance().cafeSelect();
-
+	
 		setSize(500, 400);
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		Dimension di = tk.getScreenSize();
@@ -123,6 +123,7 @@ class Design extends JFrame implements ItemListener, ActionListener, MouseListen
 		this.setLocation((int) ((di.getWidth() - this.getWidth()) / 2 - (di1.getWidth() - this.getWidth()) / 2),
 				(int) ((di.getHeight() - this.getHeight()) / 2 - (di1.getHeight() - this.getHeight()) / 2));
 		setVisible(true);
+		setResizable(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	}
@@ -190,6 +191,8 @@ class Design extends JFrame implements ItemListener, ActionListener, MouseListen
 			}
 		} else if (obj == MypageBtn) {
 			new mypage();
+		} else if (obj== favorBtn){
+			new favor();
 		}
 
 	}// actionPerformed()
@@ -210,4 +213,18 @@ class Design extends JFrame implements ItemListener, ActionListener, MouseListen
 		return crow;
 	}
 
+
 }// end class
+
+// end class
+
+public class beverage {
+
+	public static void main(String[] args) {
+	
+		new Design();
+
+	}
+
+}
+

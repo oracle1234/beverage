@@ -128,7 +128,6 @@ public class mypage extends JFrame implements ActionListener {
 	}
 
 	public void changeMethod() {
-		System.out.println("test");
 		String passwd = passwdF.getText();
 		String email = emailL.getText();
 		dao.setPassword(passwd);

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.beverage.dto.BeverageDTO;
+import com.beverage.dto.FavorDTO;
 import com.beverage.dto.ReviewDTO;
 import com.beverage.dto.MemberDTO;
 
@@ -171,16 +172,15 @@ public class BeverageDAO {
 	// 회원정보 수정
 	public boolean updateMember(MemberDTO updto) {
 		boolean ok = false;
-		
+
 		try {
 			conn = init();
-			String sql = "UPDATE b_member SET email=?, password=? "
-					+ "WHERE member_id=? ";
+			String sql = "UPDATE b_member SET email=?, password=? " + "WHERE member_id=? ";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, updto.getEmail());
 			pstmt.setString(2, updto.getPassword());
 			pstmt.setString(3, updto.getMember_id());
-			
+
 			int rs = pstmt.executeUpdate();
 
 			if (rs > 0) {
@@ -246,7 +246,7 @@ public class BeverageDAO {
 		return check;
 	}// end idCheck()
 
-	public int reviewInsert(int id, String review, int num) {
+	public int reviewInsert(int id, String review, int jumsu) {
 		int cnt = 0;
 		try {
 			conn = init();
@@ -257,7 +257,7 @@ public class BeverageDAO {
 			pstmt.setInt(1, id);
 			pstmt.setString(2, "eeee");
 			pstmt.setString(3, review);
-			pstmt.setInt(4, num);
+			pstmt.setInt(4, jumsu);
 
 			cnt = pstmt.executeUpdate();
 
@@ -268,6 +268,30 @@ public class BeverageDAO {
 			stop();
 		}
 		return cnt;
+
+	}// end insertMethod
+
+	public void favorInsert(int member_num, int beverage_id, String cafe_name, String beverage_name) {
+
+		try {
+			conn = init();
+
+			String sql = "insert into b_favor(member_num, beverage_id, cafe_name, beverage_name) values(?,?,?,?)";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, member_num);
+			pstmt.setInt(2, beverage_id);
+			pstmt.setString(3, cafe_name);
+			pstmt.setString(4, beverage_name);
+
+			pstmt.executeQuery();
+
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
 
 	}// end insertMethod
 
@@ -370,4 +394,28 @@ public class BeverageDAO {
 		return arr;
 	}
 
+	public ArrayList<FavorDTO> favorSearch(String name, String type, int price){
+		ArrayList<FavorDTO> fav = new ArrayList<FavorDTO>();
+		
+		try {
+			conn=init();
+			String sql="select * from b_favor "
+					+ "where beverage_id=?, cafe_name=?, beverage_name=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, name);
+			
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		return fav;
+	}
+	
 }// end class
