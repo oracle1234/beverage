@@ -114,8 +114,8 @@ public class BeverageDAO {
 	}// end
 
 	// 카페에 음료 추가하기
-	public void cafeBeverageInsert(BeverageDTO dto) {
-
+	public int cafeBeverageInsert(BeverageDTO dto) {
+		int cnt = 0;
 		try {
 			conn = init();
 			String sql = "insert into b_beverage(beverage_id, cafe_id, beverage_price, beverage_type, beverage_name, beverage_text)"
@@ -126,13 +126,14 @@ public class BeverageDAO {
 			pstmt.setString(3, dto.getBeverage_type());
 			pstmt.setString(4, dto.getBeverage_name());
 			pstmt.setString(5, dto.getBeverage_text());
-			pstmt.executeUpdate();
+			cnt = pstmt.executeUpdate();
 
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		} finally {
 			stop();
 		}
+		return cnt;
 	}// end cafeBeverageInsert()
 
 	// 음료 삭제하기 - 리뷰까지 전부 삭제
@@ -150,6 +151,38 @@ public class BeverageDAO {
 		} finally {
 			stop();
 		}
+	}
+
+	// 관리자 페이지 음료 전부 불러오기
+	public ArrayList<BeverageDTO> allBeverageSearch() {
+		ArrayList<BeverageDTO> arr = new ArrayList<BeverageDTO>();
+
+		try {
+			conn = init();
+
+			String sql = "select * from b_beverage order by beverage_price";
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+
+			while (rs.next()) {
+				BeverageDTO dto = new BeverageDTO();
+				dto.setBeverage_id(rs.getInt("beverage_id"));
+				dto.setCafe_id(rs.getInt("cafe_id"));
+				dto.setBeverage_price(rs.getInt("beverage_price"));
+				dto.setBeverage_type(rs.getString("beverage_type"));
+				dto.setBeverage_name(rs.getString("beverage_name"));
+				dto.setBeverage_text(rs.getString("beverage_text"));
+				arr.add(dto);
+			}
+
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+
+		return arr;
 	}
 
 	// 로그인 & 정보 불러오기
@@ -497,25 +530,25 @@ public class BeverageDAO {
 		}
 	}
 
-	public ArrayList<BeverageDTO> allBeverageSearch() {
-		ArrayList<BeverageDTO> arr = new ArrayList<BeverageDTO>();
-
+	// 즐겨찾기에서 리뷰로
+	public BeverageDTO favoerToReview(int beverage_id) {
+		BeverageDTO dto = new BeverageDTO();
 		try {
 			conn = init();
+			String sql = "select b.beverage_id, b.cafe_id, b.beverage_price, b.beverage_type, b.beverage_name, b.beverage_text"
+					+ " from b_favor f, b_beverage b" + " where f.beverage_id = b.beverage_id and b.beverage_id = ?";
 
-			String sql = "select * from b_beverage order by beverage_price";
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery(sql);
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, beverage_id);
+			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				BeverageDTO dto = new BeverageDTO();
 				dto.setBeverage_id(rs.getInt("beverage_id"));
 				dto.setCafe_id(rs.getInt("cafe_id"));
 				dto.setBeverage_price(rs.getInt("beverage_price"));
 				dto.setBeverage_type(rs.getString("beverage_type"));
 				dto.setBeverage_name(rs.getString("beverage_name"));
 				dto.setBeverage_text(rs.getString("beverage_text"));
-				arr.add(dto);
 			}
 
 		} catch (ClassNotFoundException | SQLException e) {
@@ -524,7 +557,7 @@ public class BeverageDAO {
 		} finally {
 			stop();
 		}
-
-		return arr;
+		return dto;
 	}
+
 }// end class

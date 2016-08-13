@@ -11,8 +11,8 @@
 	</page_setting>
 	<category_index>0</category_index>
 	<zoom>1.0</zoom>
-	<x>465</x>
-	<y>53</y>
+	<x>0</x>
+	<y>0</y>
 	<default_color>
 		<r>128</r>
 		<g>128</g>
@@ -110,7 +110,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2016-08-08 14:37:40</creation_date>
-			<updated_date>2016-08-12 14:56:55</updated_date>
+			<updated_date>2016-08-13 14:32:38</updated_date>
 			<model_property>
 				<name>프로젝트명</name>
 				<value></value>
@@ -479,12 +479,12 @@
 	<contents>
 		<note>
 			<id>0</id>
-			<height>62</height>
-			<width>323</width>
+			<height>60</height>
+			<width>327</width>
 				<font_name>맑은 고딕</font_name>
 				<font_size>9</font_size>
-			<x>764</x>
-			<y>153</y>
+			<x>744</x>
+			<y>168</y>
 			<color>
 				<r>128</r>
 				<g>128</g>
@@ -496,11 +496,11 @@
 		</note>
 		<note>
 			<id>1</id>
-			<height>-1</height>
-			<width>-1</width>
+			<height>60</height>
+			<width>314</width>
 				<font_name>맑은 고딕</font_name>
 				<font_size>9</font_size>
-			<x>192</x>
+			<x>79</x>
 			<y>257</y>
 			<color>
 				<r>128</r>
@@ -509,16 +509,16 @@
 			</color>
 			<connections>
 			</connections>
-			<text>[즐겨찿기]&#x0D;&#x0A;회원번호(f), 음료번호, 카페이름, 음료이름</text>
+			<text>[즐겨찿기]&#x0D;&#x0A;회원번호(f), 음료번호, 카페이름, 음료이름, 음료 가격</text>
 		</note>
 		<note>
 			<id>2</id>
 			<height>62</height>
-			<width>147</width>
+			<width>186</width>
 				<font_name>맑은 고딕</font_name>
 				<font_size>9</font_size>
-			<x>227</x>
-			<y>540</y>
+			<x>79</x>
+			<y>480</y>
 			<color>
 				<r>128</r>
 				<g>128</g>
@@ -531,10 +531,10 @@
 		<note>
 			<id>3</id>
 			<height>62</height>
-			<width>384</width>
+			<width>433</width>
 				<font_name>맑은 고딕</font_name>
 				<font_size>9</font_size>
-			<x>405</x>
+			<x>300</x>
 			<y>540</y>
 			<color>
 				<r>128</r>
@@ -547,12 +547,12 @@
 		</note>
 		<note>
 			<id>4</id>
-			<height>62</height>
-			<width>198</width>
+			<height>60</height>
+			<width>296</width>
 				<font_name>맑은 고딕</font_name>
 				<font_size>9</font_size>
-			<x>827</x>
-			<y>540</y>
+			<x>804</x>
+			<y>541</y>
 			<color>
 				<r>128</r>
 				<g>128</g>
@@ -560,7 +560,7 @@
 			</color>
 			<connections>
 			</connections>
-			<text>[상세보기]&#x0D;&#x0A;음료번호(f), 평가점수, 음료리뷰</text>
+			<text>[상세보기]&#x0D;&#x0A;음료번호(f), 평가점수, 음료리뷰, 회원id, 음료가격</text>
 		</note>
 		<table>
 			<id>5</id>
@@ -632,7 +632,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>13</word_id>
+					<word_id>12</word_id>
 					<id>1</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -687,22 +687,8 @@
 				<b>192</b>
 			</color>
 			<connections>
-				<comment_connection>
-					<id>1</id>
-					<source>3</source>
-					<target>6</target>
-						<source_xp>-1</source_xp>
-						<source_yp>-1</source_yp>
-						<target_xp>-1</target_xp>
-						<target_yp>-1</target_yp>
-						<color>
-							<r>0</r>
-							<g>0</g>
-							<b>0</b>
-						</color>
-				</comment_connection>
 				<relation>
-					<id>2</id>
+					<id>1</id>
 					<source>5</source>
 					<target>6</target>
 						<source_xp>-1</source_xp>
@@ -723,6 +709,20 @@
 					<referenced_column>null</referenced_column>
 					<referenced_complex_unique_key>null</referenced_complex_unique_key>
 				</relation>
+				<comment_connection>
+					<id>2</id>
+					<source>3</source>
+					<target>6</target>
+						<source_xp>-1</source_xp>
+						<source_yp>-1</source_yp>
+						<target_xp>-1</target_xp>
+						<target_yp>-1</target_yp>
+						<color>
+							<r>0</r>
+							<g>0</g>
+							<b>0</b>
+						</color>
+				</comment_connection>
 			</connections>
 			<physical_name>b_beverage</physical_name>
 			<logical_name>새 테이블</logical_name>
@@ -767,7 +767,7 @@
 				<normal_column>
 					<id>3</id>
 					<referenced_column>0</referenced_column>
-					<relation>2</relation>
+					<relation>1</relation>
 					<description></description>
 					<unique_key_name></unique_key_name>
 					<logical_name></logical_name>
@@ -1229,8 +1229,22 @@
 				<b>192</b>
 			</color>
 			<connections>
-				<relation>
+				<comment_connection>
 					<id>4</id>
+					<source>1</source>
+					<target>8</target>
+						<source_xp>-1</source_xp>
+						<source_yp>-1</source_yp>
+						<target_xp>-1</target_xp>
+						<target_yp>-1</target_yp>
+						<color>
+							<r>0</r>
+							<g>0</g>
+							<b>0</b>
+						</color>
+				</comment_connection>
+				<relation>
+					<id>5</id>
 					<source>7</source>
 					<target>8</target>
 						<source_xp>-1</source_xp>
@@ -1251,20 +1265,6 @@
 					<referenced_column>null</referenced_column>
 					<referenced_complex_unique_key>null</referenced_complex_unique_key>
 				</relation>
-				<comment_connection>
-					<id>5</id>
-					<source>1</source>
-					<target>8</target>
-						<source_xp>-1</source_xp>
-						<source_yp>-1</source_yp>
-						<target_xp>-1</target_xp>
-						<target_yp>-1</target_yp>
-						<color>
-							<r>0</r>
-							<g>0</g>
-							<b>0</b>
-						</color>
-				</comment_connection>
 			</connections>
 			<physical_name>b_favor</physical_name>
 			<logical_name>선호</logical_name>
@@ -1276,7 +1276,7 @@
 				<normal_column>
 					<id>15</id>
 					<referenced_column>8</referenced_column>
-					<relation>4</relation>
+					<relation>5</relation>
 					<description></description>
 					<unique_key_name></unique_key_name>
 					<logical_name></logical_name>
@@ -1341,7 +1341,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>12</word_id>
+					<word_id>13</word_id>
 					<id>17</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -1407,7 +1407,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>4</word_id>
+					<word_id>5</word_id>
 					<id>19</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -1640,7 +1640,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>5</word_id>
+					<word_id>4</word_id>
 					<id>24</id>
 					<description></description>
 					<unique_key_name></unique_key_name>

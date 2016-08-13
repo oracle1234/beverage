@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -54,32 +56,43 @@ public class AdminJFrame extends JFrame implements ActionListener, MouseListener
 		if (obj == admin.cafeInBtn) {
 			if (admin.cafeName.getText().length() > 0) {
 				if (dao.cafeInsert(admin.cafeName.getText()) > 0) {
-					JOptionPane.showMessageDialog(admin, "카페 등록 성공");
+					showMessage("카페 등록 성공");
 					admin.cafeName.setText("");
 					refresh();
 				}
 			} else {
-				JOptionPane.showMessageDialog(admin, "등록할 카페를 입력하세요.");
+				showMessage("등록할 카페를 입력하세요.");
 			}
 
 		} else if (obj == admin.cafeDelBtn) {
 			dao.cafeDelete((String) admin.cafeBox.getSelectedItem());
-			JOptionPane.showMessageDialog(admin, "카페 삭제 성공");
+			showMessage("카페 삭제 성공");
 			refresh();
 		} else if (obj == admin.b_Insert) {
-			BeverageDTO dto = new BeverageDTO();
-			dto.setCafe_id(admin.b_CafeBox.getSelectedIndex() + 1);
-			dto.setBeverage_price(Integer.parseInt(admin.jfPrice.getText()));
-			dto.setBeverage_type((String) admin.b_TypeBox.getSelectedItem());
-			dto.setBeverage_name(admin.jfName.getText());
-			dto.setBeverage_text(admin.jfText.getText());
-			dao.cafeBeverageInsert(dto);
 
-			JOptionPane.showMessageDialog(admin, "음료 등록 성공");
-			admin.getList();
-			refresh();
+			if (admin.jfPrice.getText().length() > 0 && admin.jfName.getText().length() > 0
+					&& admin.jfText.getText().length() > 0) {
+				BeverageDTO dto = new BeverageDTO();
+				dto.setCafe_id(admin.b_CafeBox.getSelectedIndex() + 1);
+				dto.setBeverage_price(Integer.parseInt(admin.jfPrice.getText()));
+				dto.setBeverage_type((String) admin.b_TypeBox.getSelectedItem());
+				dto.setBeverage_name(admin.jfName.getText());
+				dto.setBeverage_text(admin.jfText.getText());
+				if (dao.cafeBeverageInsert(dto) > 0) {
+					showMessage("음료 등록 성공");
+				}
+				admin.getList();
+				refresh();
+			} else {
+				showMessage("정보를 입력해주세요.");
+			}
+
 		}
 
+	}
+
+	public void showMessage(String str) {
+		JOptionPane.showMessageDialog(this, str);
 	}
 
 	public int getConfirmMessage(String msg) {

@@ -48,3 +48,13 @@ select avg(review_level) from b_review where beverage_id = ? group by beverage_i
 
 
 select * from b_favor where member_num=2;
+
+
+select * from b_beverage order by beverage_price;
+
+select b.beverage_id, b.cafe_id, b.beverage_price, b.beverage_type, b.beverage_name, b.beverage_text
+from b_favor f, b_beverage b
+where f.beverage_id = b.beverage_id and b.beverage_id = 66
+
+
+SELECT * FROM b_member WHERE member_id='aa' AND password='aa'
