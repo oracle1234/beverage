@@ -185,6 +185,25 @@ public class BeverageDAO {
 		return arr;
 	}
 
+	// 관리자 페이지 리뷰 삭제
+	public void reviewDelete(int beverage_id, String member_id) {
+		try {
+			conn = init();
+			String sql = "delete from b_review where beverage_id = ? and member_id = ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, beverage_id);
+			pstmt.setString(2, member_id);
+			pstmt.executeUpdate();
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+	}
+
 	// 로그인 & 정보 불러오기
 	public boolean getMember(String id, String password) {
 		MemberDTO dto = MemberDTO.getInstance();

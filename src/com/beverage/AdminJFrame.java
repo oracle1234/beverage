@@ -30,18 +30,20 @@ public class AdminJFrame extends JFrame implements ActionListener, MouseListener
 		admin.b_Insert.addActionListener(this);
 		admin.table.addMouseListener(this);
 
-		setTitle("관리자 페이지");
-		ImageIcon img = new ImageIcon("src/com/beverage/Coffee-toGo-icon.png");
-		this.setIconImage(img.getImage());
-		setContentPane(admin.adminJP());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(500, 770);
+		setTitle("관리자 페이지");
+		setContentPane(admin.adminJP());
+		setVisible(true);
+
+		// 화면 중간
+		ImageIcon img = new ImageIcon("src/com/beverage/Coffee-toGo-icon.png");
+		this.setIconImage(img.getImage());
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		Dimension di = tk.getScreenSize();
 		Dimension di1 = this.getSize();
 		this.setLocation((int) ((di.getWidth() - this.getWidth()) / 2 - (di1.getWidth() - this.getWidth()) / 2),
 				(int) ((di.getHeight() - this.getHeight()) / 2 - (di1.getHeight() - this.getHeight()) / 2));
-		setVisible(true);
 
 	}
 
@@ -95,11 +97,6 @@ public class AdminJFrame extends JFrame implements ActionListener, MouseListener
 		JOptionPane.showMessageDialog(this, str);
 	}
 
-	public int getConfirmMessage(String msg) {
-		JLabel label = new JLabel(msg);
-		return JOptionPane.showConfirmDialog(this, label, "메세지", JOptionPane.YES_NO_OPTION);
-	}
-
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		Object obj = e.getSource();
@@ -108,13 +105,19 @@ public class AdminJFrame extends JFrame implements ActionListener, MouseListener
 			if (row < 0 || admin.table.getValueAt(row, 0) == null)
 				return;
 
-			int msg = getConfirmMessage("삭제 하시겠습니까?");
-			if (msg == 0) {
+			Object[] options = { "리뷰 관리", "음료 삭제" };
+			int n = JOptionPane.showOptionDialog(this, "리뷰관리와 음료 삭제중 선택", "음료", JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+			switch (n) {
+			case 0:
+				new AdminJPanelReview(admin.beverageList.get(row).getBeverage_id());
+				break;
+			case 1:
 				dao.cafeBeverageDelete(admin.beverageList.get(row).getBeverage_id());
 				admin.getList();
 				refresh();
-			} else {
-
+				break;
 			}
 
 		}

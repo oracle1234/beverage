@@ -56,5 +56,6 @@ select b.beverage_id, b.cafe_id, b.beverage_price, b.beverage_type, b.beverage_n
 from b_favor f, b_beverage b
 where f.beverage_id = b.beverage_id and b.beverage_id = 66
 
+delete from b_review where beverage_id = ? and member_id = ? 
 
 SELECT * FROM b_member WHERE member_id='aa' AND password='aa'
