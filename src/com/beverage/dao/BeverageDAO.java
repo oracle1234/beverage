@@ -73,7 +73,6 @@ public class BeverageDAO {
 
 	// 카페 정보 삭제
 	public void cafeDelete(String cafe) {
-
 		try {
 			conn = init();
 			String sql = "delete from b_cafe where cafe_name = ?";
@@ -94,7 +93,7 @@ public class BeverageDAO {
 		MemberDTO.getInstance().getCafeList().removeAll(MemberDTO.getInstance().getCafeList());
 		try {
 			conn = init();
-			String sql = "select * from b_cafe";
+			String sql = "select * from b_cafe order by cafe_id";
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
 

@@ -86,7 +86,7 @@ CREATE TABLE b_review
 
 ALTER TABLE b_beverage
 	ADD FOREIGN KEY (cafe_id)
-	REFERENCES b_cafe (cafe_id)
+	REFERENCES b_cafe (cafe_id) ON DELETE CASCADE
 ;
 
 

@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 
 import com.beverage.dao.BeverageDAO;
 import com.beverage.dto.BeverageDTO;
+import com.beverage.dto.MemberDTO;
 
 public class AdminJFrame extends JFrame implements ActionListener, MouseListener {
 	AdminJPanel admin;
@@ -75,13 +76,18 @@ public class AdminJFrame extends JFrame implements ActionListener, MouseListener
 			if (admin.jfPrice.getText().length() > 0 && admin.jfName.getText().length() > 0
 					&& admin.jfText.getText().length() > 0) {
 				BeverageDTO dto = new BeverageDTO();
-				dto.setCafe_id(admin.b_CafeBox.getSelectedIndex() + 1);
+
+				dto.setCafe_id(
+						MemberDTO.getInstance().getCafeList().get(admin.b_CafeBox.getSelectedIndex()).getCafe_id());
 				dto.setBeverage_price(Integer.parseInt(admin.jfPrice.getText()));
 				dto.setBeverage_type((String) admin.b_TypeBox.getSelectedItem());
 				dto.setBeverage_name(admin.jfName.getText());
 				dto.setBeverage_text(admin.jfText.getText());
 				if (dao.cafeBeverageInsert(dto) > 0) {
 					showMessage("음료 등록 성공");
+					admin.jfPrice.setText("");
+					admin.jfName.setText("");
+					admin.jfText.setText("");
 				}
 				admin.getList();
 				refresh();
