@@ -185,14 +185,14 @@ class MemberJoin extends JFrame implements ActionListener {
 
 		// 텍스트필드 빈칸일시 메세지 출력
 
-		if (idF.getText().equals("")) {
-			JOptionPane.showMessageDialog(this, "아이디를 입력하세요.");
-		} else {
+		//if (idF.getText().equals("")) {
+		//	JOptionPane.showMessageDialog(this, "아이디를 입력하세요.");
+		//} else {
 			if (idF.getText().length() >= 12) {
 				JOptionPane.showMessageDialog(this, "아이디는 영문, 숫자혼합 12자리까지 허용합니다");
 				return;
 			}
-		}
+		//}
 
 		if (idF.getText().equals("")) {
 			JOptionPane.showMessageDialog(this, "아이디를 입력하세요.");
