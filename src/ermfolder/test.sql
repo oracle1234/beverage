@@ -59,3 +59,19 @@ where f.beverage_id = b.beverage_id and b.beverage_id = 66
 delete from b_review where beverage_id = ? and member_id = ? 
 
 SELECT * FROM b_member WHERE member_id='aa' AND password='aa'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -344,7 +344,7 @@ public class BeverageDAO {
 		return check;
 	}// end idCheck()
 
-	// 음료 검색하기
+	// 리뷰 등록
 	public int reviewInsert(int beverage_id, String member_id, String beverage_review, int review_level) {
 
 		int cnt = 0;
@@ -371,32 +371,7 @@ public class BeverageDAO {
 
 	}// end insertMethod
 
-	public void favorInsert(int member_num, int beverage_id, String cafe_name, String beverage_name,
-			int beverage_price) {
-
-		try {
-			conn = init();
-
-			String sql = "insert into b_favor values(?,?,?,?,?)";
-			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setInt(1, member_num);
-			pstmt.setInt(2, beverage_id);
-			pstmt.setString(3, cafe_name);
-			pstmt.setString(4, beverage_name);
-			pstmt.setInt(5, beverage_price);
-
-			pstmt.executeQuery();
-
-		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			stop();
-		}
-
-	}// end insertMethod
-
+	// 리뷰 리스트
 	public ArrayList<ReviewDTO> searchMethod(int id) {
 
 		ArrayList<ReviewDTO> aList = new ArrayList<ReviewDTO>();
@@ -429,6 +404,7 @@ public class BeverageDAO {
 
 	}// searchMethod
 
+	// 음료 평점
 	public double levelMethod(int b_id) {
 		double avg = 0;
 
@@ -453,6 +429,35 @@ public class BeverageDAO {
 		return Math.round(avg * 100) / (double) 100;
 	}
 
+	// 즐겨 찾기 리스트
+	public boolean favoerCheck(int beverage_id) {
+		boolean is_check = false;
+		try {
+			conn = init();
+			String sql = "select * from b_favor where member_num=? and beverage_id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, MemberDTO.getInstance().getMember_num());
+			pstmt.setInt(2, beverage_id);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				is_check = true;
+			}
+
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+
+		return is_check;
+	}
+
+	// 메인 음료 검색
 	public ArrayList<BeverageDTO> beverageSearch(String name, String price) {
 		ArrayList<BeverageDTO> arr = new ArrayList<BeverageDTO>();
 
@@ -497,6 +502,34 @@ public class BeverageDAO {
 		return arr;
 	}
 
+	// 즐겨찾기 추가
+	public void favorInsert(int member_num, int beverage_id, String cafe_name, String beverage_name,
+			int beverage_price) {
+
+		try {
+			conn = init();
+
+			String sql = "insert into b_favor values(?,?,?,?,?)";
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, member_num);
+			pstmt.setInt(2, beverage_id);
+			pstmt.setString(3, cafe_name);
+			pstmt.setString(4, beverage_name);
+			pstmt.setInt(5, beverage_price);
+
+			pstmt.executeQuery();
+
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			stop();
+		}
+
+	}// end insertMethod
+
+	// 즐겨 찾기 리스트
 	public ArrayList<FavorDTO> favorSearch() {
 		ArrayList<FavorDTO> fav = new ArrayList<FavorDTO>();
 
@@ -529,6 +562,7 @@ public class BeverageDAO {
 		return fav;
 	}
 
+	// 즐겨찾기 삭제
 	public void favorDel(int id) {
 		try {
 			conn = init();
