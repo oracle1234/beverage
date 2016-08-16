@@ -6,5 +6,7 @@ public class BeverageMain extends JFrame {
 
 	public static void main(String[] args) {
 		new LoginFrame();
+		
+		//new
 	}
 }
