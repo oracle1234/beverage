@@ -120,7 +120,7 @@ class Review extends JFrame implements ActionListener {
 
 		jp2 = new JPanel();
 		detail = new JLabel();
-
+		
 		String str = "";
 		if (dto.getBeverage_text().length() > 30) {
 			str = "<html>" + dto.getBeverage_text().substring(0, 30) + "<br>" + dto.getBeverage_text().substring(30)
