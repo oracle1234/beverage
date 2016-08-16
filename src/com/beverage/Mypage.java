@@ -1,14 +1,17 @@
 package com.beverage;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,7 +27,7 @@ import com.beverage.dto.MemberDTO;
 
 public class Mypage extends JFrame implements ActionListener {
 	MemberDTO dao = MemberDTO.getInstance();
-	BeverageDAO dto= BeverageDAO.getInstance();
+	BeverageDAO dto = BeverageDAO.getInstance();
 	JLabel idL, passwdL, nameL, genderL, emailL, birthL, idF, nameF, birthF;
 	JTextField emailF;
 	JPasswordField passwdF;
@@ -105,13 +108,22 @@ public class Mypage extends JFrame implements ActionListener {
 		setLayout(new FlowLayout());
 
 		add("Center", top);
-		
+
 		change.addActionListener(this);
-		
 
 		setSize(500, 350);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		// 화면 중앙에 창뜨기
+		ImageIcon img = new ImageIcon("src/com/beverage/Coffee-toGo-icon.png");
+		this.setIconImage(img.getImage());
+		Toolkit tk = Toolkit.getDefaultToolkit();
+		Dimension di = tk.getScreenSize();
+		Dimension di1 = this.getSize();
+		this.setLocation((int) ((di.getWidth() - this.getWidth()) / 2 - (di1.getWidth() - this.getWidth()) / 2),
+				(int) ((di.getHeight() - this.getHeight()) / 2 - (di1.getHeight() - this.getHeight()) / 2));
+		//
+
 	}
 
 	public static void main(String[] args) {
@@ -137,8 +149,7 @@ public class Mypage extends JFrame implements ActionListener {
 		if (!dao.getPassword().equals(passwdF) == true && !dao.getEmail().equals(emailL) == true)
 			JOptionPane.showMessageDialog(this, "수정이 완료되었습니다.");
 		dispose();
-		
-		
+
 	}
 
 }

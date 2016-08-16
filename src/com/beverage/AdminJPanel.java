@@ -123,8 +123,6 @@ public class AdminJPanel extends JPanel {
 		del4.add(del3);
 
 		// 음료등록
-		// JPanel bein1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		// bein1.add(new JLabel("음료 등록"));
 		JPanel bein2 = new JPanel(new GridLayout(5, 2));
 		bein2.add(new JLabel("카페"));
 		bein2.add(b_CafeBox);
