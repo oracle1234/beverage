@@ -429,7 +429,7 @@ public class BeverageDAO {
 		return Math.round(avg * 100) / (double) 100;
 	}
 
-	// 즐겨 찾기 리스트
+	// 즐겨 찾기에 이미 등록했는지 체크
 	public boolean favoerCheck(int beverage_id) {
 		boolean is_check = false;
 		try {
